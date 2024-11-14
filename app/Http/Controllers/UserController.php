@@ -57,7 +57,7 @@ class UserController extends Controller
         $image = $request->file('avatar_file');
 
         if ($image) {
-            $avatar = $image->storePublicly('avatar');
+            $avatar = $image->storePublicly('avatar','public');
             $user->update(compact('avatar'));
         }
 
