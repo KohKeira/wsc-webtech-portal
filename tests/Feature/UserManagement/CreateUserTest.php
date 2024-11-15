@@ -39,6 +39,8 @@ test('user cannot be created with student role', function () {
     ];
     $response = $this->actingAs($student)->post('/users', $newUser);
     $response->assertStatus(302);
+    $this->assertDatabaseMissing('users', $newUser);
+
     $response->assertRedirect('/dashboard');
 
 });
@@ -54,6 +56,8 @@ test('user cannot be created with no login', function () {
     ];
     $response = $this->post('/users', $newUser);
     $response->assertStatus(302);
+    $this->assertDatabaseMissing('users', $newUser);
+
     $response->assertRedirect('/login');
 
 });
@@ -64,7 +68,7 @@ test('user cannot be created with validation error', function ($newUser, $invali
     $response = $this->actingAs($lecturer)->post('/users', $newUser);
     $response->assertSessionHasErrors($invalidFields);
     $response->assertStatus(302);
-    $this->assertDatabaseMissing('users', ['email' => $newUser['email']]);
+    $this->assertDatabaseMissing('users', $newUser);
 
 })->with([
             [
@@ -78,11 +82,11 @@ test('user cannot be created with validation error', function ($newUser, $invali
                     'password' => ''
                 ],
                 [
-                    'name',
-                    'email',
-                    'gender',
-                    'role',
-                    'phone_number',
+                    'name' => 'The name field is required.',
+                    'email' => 'The email field is required.',
+                    'gender' => 'The gender field is required.',
+                    'role' => 'The role field is required.',
+                    'phone_number' => 'The phone number field is required.',
                 ]
             ],
             [
@@ -95,8 +99,21 @@ test('user cannot be created with validation error', function ($newUser, $invali
                     'role' => 'student',
                 ],
                 [
-                    'email',
-                    'phone_number',
+                    'email' => 'The email field must be a valid email address.',
+                    'phone_number' => 'The phone number field format is invalid.',
+                ]
+            ],
+            [
+                // test format of  phone number
+                [
+                    'name' => 'James Tan',
+                    'email' => '2301234B@student.tp.edu.sg',
+                    'gender' => 'male',
+                    'phone_number' => '3@234567',
+                    'role' => 'student',
+                ],
+                [
+                    'phone_number' => 'The phone number field format is invalid.',
                 ]
             ],
             [
@@ -109,8 +126,8 @@ test('user cannot be created with validation error', function ($newUser, $invali
                     'role' => 'teacher',
                 ],
                 [
-                    'gender',
-                    'role',
+                    'gender' => 'The selected gender is invalid.',
+                    'role' => 'The selected role is invalid.',
                 ]
             ],
             [
@@ -159,12 +176,20 @@ test('duplicated user cannot be created', function () {
     $lecturer = User::where('role', '=', 'lecturer')->first();
     $newUser = User::where('role', '=', 'student')->first()->toArray();
     $response = $this->actingAs($lecturer)->post('/users', $newUser);
-    $response->assertSessionHasErrors(['name', 'email', 'phone_number']);
+    $response->assertSessionHasErrors([
+        'name' => 'The name has already been taken.',
+        'email' => 'The email has already been taken.',
+        'phone_number' => 'The phone number has already been taken.'
+    ]);
+    $this->assertDatabaseMissing('users', $newUser);
+
     $response->assertStatus(302);
 
 });
 
-test('upload avatar when user created successfully', function () {
+
+// avatar file validation
+test('user created successfully with avatar', function () {
     $this->seed();
     $lecturer = User::where('role', '=', 'lecturer')->first();
     $newUser = [
@@ -176,11 +201,37 @@ test('upload avatar when user created successfully', function () {
     ];
     Storage::fake('public');
     $file = UploadedFile::fake()->image('avatar.jpg');
+    Storage::disk('public')->assertMissing('avatar/' . $file->hashName());
     $response = $this->actingAs($lecturer)->post('/users', [...$newUser, 'avatar_file' => $file]);
     $response->assertSessionHasNoErrors();
     $response->assertStatus(302);
-    $this->assertDatabaseHas('users', $newUser);
+    $this->assertDatabaseHas('users', [...$newUser, 'avatar' => 'avatar/' . $file->hashName()]);
     Storage::disk('public')->assertExists('avatar/' . $file->hashName());
     $this->followRedirects($response)->assertSee('User created successfully');
+
+});
+
+test('user cannot be created with wrong avatar file type', function () {
+    $this->seed();
+    $lecturer = User::where('role', '=', 'lecturer')->first();
+    $newUser = [
+        'name' => 'James Tan',
+        'email' => '2301234B@student.tp.edu.sg',
+        'gender' => 'male',
+        'phone_number' => 91234565,
+        'role' => 'student',
+    ];
+    Storage::fake('public');
+    $file = UploadedFile::fake()->create(
+        'document.pdf',
+        500,
+        'application/pdf'
+    );
+    Storage::disk('public')->assertMissing('avatar/' . $file->hashName());
+    $response = $this->actingAs($lecturer)->post('/users', [...$newUser, 'avatar_file' => $file]);
+    $response->assertSessionHasErrors(['avatar_file' => 'The avatar file field must be a file of type: png, jpg, jpeg.']);
+    $response->assertStatus(302);
+    $this->assertDatabaseMissing('users', [...$newUser, 'avatar' => 'avatar/' . $file->hashName()]);
+    Storage::disk('public')->assertMissing('avatar/' . $file->hashName());
 
 });
