@@ -35,3 +35,25 @@
 //     }
 //   }
 // }
+
+export {};
+
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            login(email: string, password: string): Chainable<void>;
+        }
+    }
+}
+
+Cypress.Commands.add('login', (email: string, password: string) => {
+    cy.visit('/');
+    // visit login page and login as admin
+    cy.get('button').click();
+    cy.get('input[name="email"]').type(email);
+    cy.get('input[name=password]').type(password);
+    cy.get('button').click();
+
+    // verfiy successfully login
+    cy.url().should('match', /dashboard/);
+});
