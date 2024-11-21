@@ -1,6 +1,5 @@
-import { exec, spawn } from 'child_process';
+import { exec } from 'child_process';
 import { defineConfig } from 'cypress';
-let server;
 
 export default defineConfig({
     e2e: {
@@ -23,7 +22,6 @@ export default defineConfig({
                     });
                 },
             });
-
         },
     },
 });
