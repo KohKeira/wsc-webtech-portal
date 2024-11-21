@@ -80,7 +80,11 @@ const Index: React.FC = () => {
                                 required
                             />
                         </div>
-                        <InputError message={errors.role} className="mt-2" />
+                        <InputError
+                            message={errors.role}
+                            className="mt-2"
+                            data-cy="role-error"
+                        />
                     </div>
                     <div>
                         <InputLabel htmlFor="name" value="Name" />
@@ -96,7 +100,11 @@ const Index: React.FC = () => {
                             required
                         />
 
-                        <InputError message={errors.name} className="mt-2" />
+                        <InputError
+                            message={errors.name}
+                            className="mt-2"
+                            data-cy="name-error"
+                        />
                     </div>
                     <div>
                         <InputLabel htmlFor="email" value="Email" />
@@ -117,7 +125,11 @@ const Index: React.FC = () => {
                             required
                         />
 
-                        <InputError message={errors.email} className="mt-2" />
+                        <InputError
+                            message={errors.email}
+                            className="mt-2"
+                            data-cy="email-error"
+                        />
                     </div>
                     <div>
                         <div className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -150,7 +162,11 @@ const Index: React.FC = () => {
                                 required
                             />
                         </div>
-                        <InputError message={errors.gender} className="mt-2" />
+                        <InputError
+                            message={errors.gender}
+                            className="mt-2"
+                            data-cy="gender-error"
+                        />
                     </div>
                     <div>
                         <InputLabel
@@ -182,6 +198,7 @@ const Index: React.FC = () => {
                         <InputError
                             message={errors.phone_number}
                             className="mt-2"
+                            data-cy="phone-error"
                         />
                     </div>
                     <div>
@@ -199,11 +216,16 @@ const Index: React.FC = () => {
                         <InputError
                             message={errors.avatar_file}
                             className="mt-2"
+                            data-cy="avatar-error"
                         />
                     </div>
 
                     <div className="flex justify-end">
-                        <PrimaryButton className="" disabled={processing}>
+                        <PrimaryButton
+                            className=""
+                            disabled={processing}
+                            data-cy="add-button"
+                        >
                             Add
                         </PrimaryButton>
                     </div>
