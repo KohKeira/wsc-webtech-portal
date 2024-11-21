@@ -3,11 +3,14 @@
     "type": "module",
     "scripts": {
         "build": "tsc && vite build",
-        "dev": "vite",
+        "dev": "vite --host",
         "lint": "eslint resources/js",
         "lint:fix": "npm run lint -- --fix",
         "format": "prettier --write resources/js",
-        "format:check": "npm run format -- --check"
+        "format:check": "npm run format -- --check",
+        "cy:run": "cypress run",
+        "laravel": "php artisan serve --host=localhost --port=8000",
+        "start": "npm run laravel & npm run dev"
     },
     "devDependencies": {
         "@eslint/compat": "^1.2.1",
@@ -21,7 +24,7 @@
         "@vitejs/plugin-react": "^4.3.3",
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.7",
-        "concurrently": "^9.0.1",
+        "cypress": "^13.16.0",
         "eslint": "^9.13.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.2.1",
