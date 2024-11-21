@@ -42,6 +42,13 @@ declare global {
     namespace Cypress {
         interface Chainable {
             login(email: string, password: string): Chainable<void>;
+            fillUserForm(
+                role: string,
+                name: string,
+                email: string,
+                gender: string,
+                phone_number: string,
+            ): Chainable<void>;
         }
     }
 }
@@ -57,3 +64,28 @@ Cypress.Commands.add('login', (email: string, password: string) => {
     // verfiy successfully login
     cy.url().should('match', /dashboard/);
 });
+Cypress.Commands.add(
+    'fillUserForm',
+    (
+        role: string,
+        name: string,
+        email: string,
+        gender: string,
+        phone_number: string,
+    ) => {
+        cy.get('input[name="role"]').check(role);
+        cy.get('input[name="role"]').should('have.value', role);
+
+        cy.get('input[name="name"]').type(name);
+        cy.get('input[name="name"]').should('have.value', name);
+
+        cy.get('input[name="email"]').type(email);
+        cy.get('input[name="email"]').should('have.value', email);
+
+        cy.get('input[name="gender"]').check(gender);
+        cy.get('input[name="gender"]').should('have.value', gender);
+
+        cy.get('input[name="phone_number"]').type(phone_number);
+        cy.get('input[name="phone_number"]').should('have.value', phone_number);
+    },
+);
