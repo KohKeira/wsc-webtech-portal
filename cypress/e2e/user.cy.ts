@@ -28,7 +28,7 @@ describe('Add User Functionality', () => {
             errorMessage: null,
         },
     ];
-    beforeEach(() => {
+    before(() => {
         cy.task('artisanMigrateFreshSeed').then((output) => {
             cy.log(output as string);
         });
@@ -103,7 +103,7 @@ describe('Add User Functionality', () => {
 
         cy.visit('users/create');
 
-        cy.fillUserForm('student', 'lily_kim', '2301234', 'female', '90123456');
+        cy.fillUserForm('student', 'lily_tan', '2301234', 'female', '90123457');
 
         cy.get('[data-cy="add-button"]').click();
 
@@ -122,7 +122,7 @@ describe('Add User Functionality', () => {
 
             cy.fillUserForm(
                 'student',
-                'lily_kim',
+                'lily_tan',
                 '2301234B',
                 'female',
                 test.phoneNumber,
