@@ -25,7 +25,10 @@ const Index: React.FC = () => {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         if (data.email && !data.email.includes('@')) {
-            data.email += Role.Student ? '@student.tp.edu.sg' : '@tp.edu.sg';
+            data.email +=
+                Role.Student === data.role
+                    ? '@student.tp.edu.sg'
+                    : '@tp.edu.sg';
         }
         console.log(data);
         post(route('users.store'));
