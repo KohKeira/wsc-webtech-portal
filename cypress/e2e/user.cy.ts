@@ -51,10 +51,10 @@ describe('Add User Functionality', () => {
 
         // fill up the form
         cy.fillUserForm(
-            'student',
-            'lily_kim',
-            '2301234B',
-            'female',
+            'lecturer',
+            'James Kim',
+            'james_kim',
+            'male',
             '90123456',
         );
 
@@ -193,5 +193,52 @@ describe('Add User Functionality', () => {
         // redirect to dashboard page when accssing add user page
         cy.visit('/users/create');
         cy.url().should('match', /dashboard/);
+    });
+    it('should upload image and add user successfully', () => {
+        //login with lecturer account
+        cy.login('ana_yap@tp.edu.sg', 'test');
+
+        cy.visit('users/create');
+
+        // fill up the form
+        cy.fillUserForm(
+            'student',
+            'Lily Kim',
+            '2210000A',
+            'female',
+            '80123456',
+        );
+        cy.get('input[type=file]').selectFile('public/images/logo.png');
+        // submit form
+        cy.get('[data-cy="add-button"]').click();
+
+        // check if redirected to users page with success message
+        cy.url().should('match', /users/);
+        cy.contains('User created successfully').should('exist');
+    });
+    it('should fail to upload non-image files and add user successfully', () => {
+        //login with lecturer account
+        cy.login('ana_yap@tp.edu.sg', 'test');
+
+        cy.visit('users/create');
+
+        // fill up the form
+        cy.fillUserForm(
+            'student',
+            'Lily Koh',
+            '2310000A',
+            'female',
+            '60123456',
+        );
+        cy.get('input[type=file]').selectFile('public/index.php');
+        // submit form
+        cy.get('[data-cy="add-button"]').click();
+
+        cy.get('[data-cy="avatar-error"]')
+            .should('exist')
+            .and(
+                'contain',
+                'The avatar file field must be a file of type: png, jpg, jpeg.',
+            );
     });
 });
