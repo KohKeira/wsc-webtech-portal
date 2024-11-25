@@ -74,7 +74,9 @@ Cypress.Commands.add(
         phone_number: string,
     ) => {
         cy.get('input[name="role"]').check(role);
-        cy.get('input[name="role"]').should('have.value', role);
+        cy.get('input[name="role"]:checked')
+            .should('be.checked')
+            .and('have.value', role);
 
         cy.get('input[name="name"]').type(name);
         cy.get('input[name="name"]').should('have.value', name);
@@ -83,7 +85,9 @@ Cypress.Commands.add(
         cy.get('input[name="email"]').should('have.value', email);
 
         cy.get('input[name="gender"]').check(gender);
-        cy.get('input[name="gender"]').should('have.value', gender);
+        cy.get('input[name="gender"]:checked')
+            .should('be.checked')
+            .and('have.value', gender);
 
         cy.get('input[name="phone_number"]').type(phone_number);
         cy.get('input[name="phone_number"]').should('have.value', phone_number);
