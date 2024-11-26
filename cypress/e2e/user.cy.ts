@@ -29,11 +29,21 @@ describe('Add User Functionality', () => {
         },
     ];
     before(() => {
+        cy.intercept('POST', '/users').as('addUser');
+
         cy.task('artisanMigrateFreshSeed').then((output) => {
             cy.log(output as string);
         });
     });
     it('should navigate to the Users Page through navigation bar and allow lecturer to access Add User page to add user successfully', () => {
+        const expectedValues = {
+            role: 'lecturer',
+            name: 'James Kim',
+            email: 'james_kim@tp.edu.sg',
+            gender: 'male',
+            phone_number: 90123456,
+        };
+
         //login with lecturer account
         cy.login('ana_yap@tp.edu.sg', 'test');
 
@@ -51,15 +61,24 @@ describe('Add User Functionality', () => {
 
         // fill up the form
         cy.fillUserForm(
-            'lecturer',
-            'James Kim',
-            'james_kim',
-            'male',
-            '90123456',
+            expectedValues.role,
+            expectedValues.name,
+            expectedValues.email.split('@')[0],
+            expectedValues.gender,
+            expectedValues.phone_number.toString(),
         );
 
         // submit form
         cy.get('[data-cy="add-button"]').click();
+
+        // intercept request and ensure data sent is correct
+        cy.wait('@addUser').then((interception) => {
+            const requestBody = interception.request.body;
+            // Validate each field's value
+            for (const key in expectedValues) {
+                expect(requestBody[key]).to.eq(expectedValues[key]);
+            }
+        });
 
         // check if redirected to users page with success message
         cy.url().should('match', /users/);
