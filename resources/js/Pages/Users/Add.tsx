@@ -8,7 +8,7 @@ import { Gender, Role, User } from '@/types/user.entity';
 import { Head, useForm } from '@inertiajs/react';
 import React, { FormEventHandler } from 'react';
 
-const Index: React.FC = () => {
+const Add: React.FC = () => {
     interface UserForm extends Partial<User> {
         avatar_file: File | undefined; // Add avatarFile for file upload
     }
@@ -238,4 +238,4 @@ const Index: React.FC = () => {
     );
 };
 
-export default Index;
+export default Add;
