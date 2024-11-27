@@ -14,7 +14,8 @@
         "start": "npm-run-all -p laravel dev",
         "serve": "npm-run-all -p laravel dev:test",
         "cy:coverage": "nyc npm run cy:run",
-        "test:unit": "jest"
+        "test:unit": "jest",
+        "test:unit-coverage": "jest --coverage"
     },
     "devDependencies": {
         "@cypress/code-coverage": "^3.13.7",
