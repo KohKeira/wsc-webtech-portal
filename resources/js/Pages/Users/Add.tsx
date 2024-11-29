@@ -39,7 +39,6 @@ const Add: React.FC = () => {
             setData('avatar_file', e.target.files[0]);
         }
     };
-
     return (
         <Authenticated
             header={
@@ -50,7 +49,7 @@ const Add: React.FC = () => {
         >
             <Head title="Add User" />
             <div className="mx-auto max-w-lg sm:p-6 lg:p-8">
-                <form onSubmit={submit} className="space-y-4">
+                <form onSubmit={submit} className="space-y-4" aria-label="form">
                     <div>
                         <div className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Role
