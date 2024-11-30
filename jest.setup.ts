@@ -9,17 +9,14 @@ global.route = jest.fn((name: string) => ({
 
 // mock Inertia hooks
 jest.mock('@inertiajs/react', () => {
-    // ...jest.requireActual('@inertiajs/react'),
-
-    // useForm: jest.fn(),
     const originalModule = jest.requireActual('@inertiajs/react');
     return {
         __esModule: true,
-        ...originalModule, // Keep other exports intact
+        ...originalModule,
         useForm: jest.fn(),
         Head: jest.fn(() => null),
         usePage: jest.fn(() => ({
             props: {},
-        })), // Mock useForm
+        })),
     };
 });
