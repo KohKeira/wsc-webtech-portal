@@ -170,8 +170,6 @@ describe('Add User', () => {
         // Re-render the component with updated mockData
         rerender(<Add />);
 
-        screen.debug(undefined, 30000);
-
         expect(screen.getByText('@student.tp.edu.sg')).toBeInTheDocument();
     });
     test('file upload for avatar', async () => {
