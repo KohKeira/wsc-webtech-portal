@@ -73,14 +73,16 @@ Cypress.Commands.add(
         gender: string,
         phone_number: string,
     ) => {
-        if (role === 'student') {
-            // uncheck default student radio button
-            cy.get('input[name="role"]').check('lecturer', { force: true });
+        if (role !== '') {
+            if (role === 'student') {
+                // uncheck default student radio button
+                cy.get('input[name="role"]').check('lecturer', { force: true });
+            }
+            cy.get('input[name="role"]').check(role, { force: true });
+            cy.get('input[name="role"]:checked')
+                .should('be.checked')
+                .and('have.value', role);
         }
-        cy.get('input[name="role"]').check(role, { force: true });
-        cy.get('input[name="role"]:checked')
-            .should('be.checked')
-            .and('have.value', role);
 
         cy.get('input[name="name"]').type(name);
         cy.get('input[name="name"]').should('have.value', name);
@@ -95,12 +97,15 @@ Cypress.Commands.add(
             cy.get('input[name="gender"]').check('male', { force: true });
         }
 
-        cy.get('input[name="gender"]').check(gender, { force: true });
-        cy.get('input[name="gender"]:checked')
-            .should('be.checked')
-            .and('have.value', gender);
+        if (gender !== '') {
+            cy.get('input[name="gender"]').check(gender, { force: true });
+            cy.get('input[name="gender"]:checked')
+                .should('be.checked')
+                .and('have.value', gender);
+        }
 
-        // type no input for phone
+        // simulate typing of empty string for phone
+        cy.get('input[name="phone_number"]').type(phone_number);
         cy.get('input[name="phone_number"]').clear();
         cy.get('input[name="phone_number"]').type(phone_number);
         cy.get('input[name="phone_number"]').should('have.value', phone_number);
