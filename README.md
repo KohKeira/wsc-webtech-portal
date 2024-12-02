@@ -37,3 +37,30 @@ This project contains a WorldSkills Competition Web Tech Portal application.
 
     ```sh
     composer run-script dev
+
+
+## Testing for Add User Functionality
+Code coverage reports can be found under `build/coverage`
+
+### Backend using Pest
+1. Run backend test
+   ```sh
+   php artisan test --coverage --min=90  --filter CreateUserTest
+   ```
+   
+### Cypress E2E
+1. Start development server for Laravel and React
+   ```sh
+   npm run serve
+   ```
+
+2. Run Cypress Test. For example, to get code coverage:
+   ```sh
+   npm run cy:coverage
+   ```
+
+### Jest and React-testing-library
+1. Run test
+   ```sh
+   npm run test:unit-coverage
+   ```
