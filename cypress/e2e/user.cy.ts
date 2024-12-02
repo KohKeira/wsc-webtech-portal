@@ -29,13 +29,14 @@ describe('Add User Functionality', () => {
         },
     ];
     before(() => {
-        cy.intercept('POST', '/users').as('addUser');
 
         cy.task('artisanMigrateFreshSeed').then((output) => {
             cy.log(output as string);
         });
     });
-    it('should navigate to the Users Page through navigation bar and allow lecturer to access Add User page to add user successfully', () => {
+    it('should allow lecuter to add user successfully', () => {
+        cy.intercept('POST', '/users').as('addUser');
+
         const expectedValues = {
             role: 'lecturer',
             name: 'James Kim',
