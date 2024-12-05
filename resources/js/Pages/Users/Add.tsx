@@ -8,7 +8,7 @@ import { Gender, Role, User } from '@/types/user.entity';
 import { Head, useForm } from '@inertiajs/react';
 import React, { FormEventHandler } from 'react';
 
-const Index: React.FC = () => {
+const Add: React.FC = () => {
     interface UserForm extends Partial<User> {
         avatar_file: File | undefined; // Add avatarFile for file upload
     }
@@ -25,7 +25,10 @@ const Index: React.FC = () => {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         if (data.email && !data.email.includes('@')) {
-            data.email += Role.Student ? '@student.tp.edu.sg' : '@tp.edu.sg';
+            data.email +=
+                Role.Student === data.role
+                    ? '@student.tp.edu.sg'
+                    : '@tp.edu.sg';
         }
         console.log(data);
         post(route('users.store'));
@@ -36,7 +39,6 @@ const Index: React.FC = () => {
             setData('avatar_file', e.target.files[0]);
         }
     };
-
     return (
         <Authenticated
             header={
@@ -47,7 +49,7 @@ const Index: React.FC = () => {
         >
             <Head title="Add User" />
             <div className="mx-auto max-w-lg sm:p-6 lg:p-8">
-                <form onSubmit={submit} className="space-y-4">
+                <form onSubmit={submit} className="space-y-4" aria-label="form">
                     <div>
                         <div className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Role
@@ -80,7 +82,11 @@ const Index: React.FC = () => {
                                 required
                             />
                         </div>
-                        <InputError message={errors.role} className="mt-2" />
+                        <InputError
+                            message={errors.role}
+                            className="mt-2"
+                            data-cy="role-error"
+                        />
                     </div>
                     <div>
                         <InputLabel htmlFor="name" value="Name" />
@@ -96,7 +102,11 @@ const Index: React.FC = () => {
                             required
                         />
 
-                        <InputError message={errors.name} className="mt-2" />
+                        <InputError
+                            message={errors.name}
+                            className="mt-2"
+                            data-cy="name-error"
+                        />
                     </div>
                     <div>
                         <InputLabel htmlFor="email" value="Email" />
@@ -117,7 +127,11 @@ const Index: React.FC = () => {
                             required
                         />
 
-                        <InputError message={errors.email} className="mt-2" />
+                        <InputError
+                            message={errors.email}
+                            className="mt-2"
+                            data-cy="email-error"
+                        />
                     </div>
                     <div>
                         <div className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -150,7 +164,11 @@ const Index: React.FC = () => {
                                 required
                             />
                         </div>
-                        <InputError message={errors.gender} className="mt-2" />
+                        <InputError
+                            message={errors.gender}
+                            className="mt-2"
+                            data-cy="gender-error"
+                        />
                     </div>
                     <div>
                         <InputLabel
@@ -182,6 +200,7 @@ const Index: React.FC = () => {
                         <InputError
                             message={errors.phone_number}
                             className="mt-2"
+                            data-cy="phone-error"
                         />
                     </div>
                     <div>
@@ -199,11 +218,16 @@ const Index: React.FC = () => {
                         <InputError
                             message={errors.avatar_file}
                             className="mt-2"
+                            data-cy="avatar-error"
                         />
                     </div>
 
                     <div className="flex justify-end">
-                        <PrimaryButton className="" disabled={processing}>
+                        <PrimaryButton
+                            className=""
+                            disabled={processing}
+                            data-cy="add-button"
+                        >
                             Add
                         </PrimaryButton>
                     </div>
@@ -213,4 +237,4 @@ const Index: React.FC = () => {
     );
 };
 
-export default Index;
+export default Add;

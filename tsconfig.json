@@ -20,6 +20,7 @@
         "resources/js/**/*.ts",
         "resources/js/**/*.tsx",
         "resources/js/**/*.d.ts",
-        "**/*.config.js"
+        "**/*.config.js",
+        "**/*.setup.ts"
     ]
 }

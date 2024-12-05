@@ -47,6 +47,7 @@ export default tseslint.config(
 
         rules: {
             ...eslintPluginReactHooks.configs.recommended.rules,
+            '@typescript-eslint/no-namespace': 'off',
             'react/react-in-jsx-scope': 'off',
             'react/prop-types': 'off',
             'react/no-unescaped-entities': 'off',
