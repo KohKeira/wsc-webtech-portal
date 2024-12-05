@@ -54,8 +54,12 @@ class User extends Authenticatable
      * Get the training sessions for the user.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+
+    // @codeCoverageIgnoreStart
     public function trainingSessions()
     {
         return $this->hasMany(TrainingSession::class);
     }
+    // @codeCoverageIgnoreEnd
+
 }

@@ -21,7 +21,7 @@
     </source>
     <coverage>
         <report>
-            <html outputDirectory="build/coverage"/>
+            <html outputDirectory="build/coverage/backend"/>
         </report>
     </coverage>
     <php>

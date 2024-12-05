@@ -57,7 +57,7 @@ class UserController extends Controller
         $image = $request->file('avatar_file');
 
         if ($image) {
-            $avatar = $image->storePublicly('avatar','public');
+            $avatar = $image->storePublicly('avatar', 'public');
             $user->update(compact('avatar'));
         }
 
@@ -66,35 +66,32 @@ class UserController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // @codeCoverageStartEnd    
     public function show(User $user)
     {
         //
     }
+    // @codeCoverageIgnoreEnd
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // @codeCoverageStartEnd    
     public function edit(User $user)
     {
         //
     }
+    // @codeCoverageIgnoreEnd
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // @codeCoverageStartEnd    
     public function update(Request $request, User $user)
     {
         //
     }
+    // @codeCoverageIgnoreEnd
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // @codeCoverageStartEnd    
     public function destroy(User $user)
     {
         //
     }
+    // @codeCoverageIgnoreEnd
+
 }

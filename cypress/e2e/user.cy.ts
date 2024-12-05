@@ -29,11 +29,22 @@ describe('Add User Functionality', () => {
         },
     ];
     before(() => {
+
         cy.task('artisanMigrateFreshSeed').then((output) => {
             cy.log(output as string);
         });
     });
-    it('should navigate to the Users Page through navigation bar and allow lecturer to access Add User page to add user successfully', () => {
+    it('should allow lecuter to add user successfully', () => {
+        cy.intercept('POST', '/users').as('addUser');
+
+        const expectedValues = {
+            role: 'lecturer',
+            name: 'James Kim',
+            email: 'james_kim@tp.edu.sg',
+            gender: 'male',
+            phone_number: 90123456,
+        };
+
         //login with lecturer account
         cy.login('ana_yap@tp.edu.sg', 'test');
 
@@ -51,15 +62,24 @@ describe('Add User Functionality', () => {
 
         // fill up the form
         cy.fillUserForm(
-            'student',
-            'lily_kim',
-            '2301234B',
-            'female',
-            '90123456',
+            expectedValues.role,
+            expectedValues.name,
+            expectedValues.email.split('@')[0],
+            expectedValues.gender,
+            expectedValues.phone_number.toString(),
         );
 
         // submit form
         cy.get('[data-cy="add-button"]').click();
+
+        // intercept request and ensure data sent is correct
+        cy.wait('@addUser').then((interception) => {
+            const requestBody = interception.request.body;
+            // Validate each field's value
+            for (const key in expectedValues) {
+                expect(requestBody[key]).to.eq(expectedValues[key]);
+            }
+        });
 
         // check if redirected to users page with success message
         cy.url().should('match', /users/);
@@ -193,5 +213,52 @@ describe('Add User Functionality', () => {
         // redirect to dashboard page when accssing add user page
         cy.visit('/users/create');
         cy.url().should('match', /dashboard/);
+    });
+    it('should upload image and add user successfully', () => {
+        //login with lecturer account
+        cy.login('ana_yap@tp.edu.sg', 'test');
+
+        cy.visit('users/create');
+
+        // fill up the form
+        cy.fillUserForm(
+            'student',
+            'Lily Kim',
+            '2210000A',
+            'female',
+            '80123456',
+        );
+        cy.get('input[type=file]').selectFile('public/images/logo.png');
+        // submit form
+        cy.get('[data-cy="add-button"]').click();
+
+        // check if redirected to users page with success message
+        cy.url().should('match', /users/);
+        cy.contains('User created successfully').should('exist');
+    });
+    it('should fail to upload non-image files and add user successfully', () => {
+        //login with lecturer account
+        cy.login('ana_yap@tp.edu.sg', 'test');
+
+        cy.visit('users/create');
+
+        // fill up the form
+        cy.fillUserForm(
+            'student',
+            'Lily Koh',
+            '2310000A',
+            'female',
+            '60123456',
+        );
+        cy.get('input[type=file]').selectFile('public/index.php');
+        // submit form
+        cy.get('[data-cy="add-button"]').click();
+
+        cy.get('[data-cy="avatar-error"]')
+            .should('exist')
+            .and(
+                'contain',
+                'The avatar file field must be a file of type: png, jpg, jpeg.',
+            );
     });
 });
