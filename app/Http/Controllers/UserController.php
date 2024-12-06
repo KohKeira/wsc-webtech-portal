@@ -14,7 +14,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Users/Index');
+        $roles = ['lecturer', 'student'];
+        $users = User::where('id', '<>', auth()->user()->id)->get()->groupBy('role');
+        $users = collect($roles)->mapWithKeys(function ($role) use ($users) {
+            return [$role => $users->get($role, collect([]))];
+        });
+        return Inertia::render('Users/Index', compact('users'));
     }
 
     /**
