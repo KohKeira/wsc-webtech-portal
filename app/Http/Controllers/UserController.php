@@ -131,7 +131,12 @@ class UserController extends Controller
     // @codeCoverageStartEnd    
     public function destroy(User $user)
     {
-        //
+        $avatar = $user->avatar;
+        if ($avatar) {
+            Storage::disk('public')->delete($avatar);
+        }
+        $user->delete();
+        return back()->with('message', 'User deleted successfully');
     }
     // @codeCoverageIgnoreEnd
 

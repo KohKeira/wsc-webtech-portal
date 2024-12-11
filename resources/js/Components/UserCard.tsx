@@ -1,10 +1,25 @@
 import { Role, User } from '@/types/user.entity';
-import { usePage } from '@inertiajs/react';
-import { FaRegCopy } from 'react-icons/fa';
+import { useForm, usePage } from '@inertiajs/react';
+import { useState } from 'react';
+import { FaCheck, FaRegCopy } from 'react-icons/fa';
 
 const UserCard: React.FC<{ user: User }> = ({ user }) => {
     const { auth } = usePage().props;
+    const [copy, setCopy] = useState(false);
 
+    const { delete: destroy } = useForm();
+    const deleteUser = (id: number) => {
+        if (confirm('Do you want to delete this user?')) {
+            destroy(route('users.destroy', { user: id }));
+        }
+    };
+    const copyToClipboard = async () => {
+        setCopy((prev) => !prev);
+        await window.navigator.clipboard.writeText(user.email);
+        setTimeout(() => {
+            setCopy((prev) => !prev);
+        }, 1000);
+    };
     return (
         <div className="h-full w-64 rounded-lg bg-sky-100 text-center shadow">
             <div className="flex flex-col items-center overflow-hidden px-4 py-6">
@@ -21,7 +36,15 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
                     {user.name}
                 </h5>
                 <span className="mt-1 w-full break-words text-sm text-gray-600 dark:text-gray-400">
-                    {user.email} <FaRegCopy className="inline" />
+                    {user.email}
+                    {copy ? (
+                        <FaCheck className="ms-1 inline cursor-pointer text-green-600" />
+                    ) : (
+                        <FaRegCopy
+                            className="ms-1 inline cursor-pointer"
+                            onClick={copyToClipboard}
+                        />
+                    )}
                 </span>
                 {auth.user.role === Role.Lecturer && (
                     <>
@@ -35,12 +58,12 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
                             >
                                 Edit
                             </a>
-                            <a
-                                href="#"
+                            <button
+                                onClick={() => deleteUser(user.id)}
                                 className="ms-2 rounded-lg border border-gray-200 bg-red-500 px-4 py-2 text-sm font-medium hover:bg-red-300 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
                             >
                                 Delete
-                            </a>
+                            </button>
                         </div>
                     </>
                 )}
