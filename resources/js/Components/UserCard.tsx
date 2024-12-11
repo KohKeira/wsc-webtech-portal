@@ -30,7 +30,7 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
                         </span>
                         <div className="mt-4 flex">
                             <a
-                                href="#"
+                                href={route('users.edit', { user: user.id })}
                                 className="inline-flex items-center rounded-lg bg-amber-400 px-4 py-2 text-center text-sm font-medium hover:bg-yellow-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
                             >
                                 Edit
