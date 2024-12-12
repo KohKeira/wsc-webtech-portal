@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\VerifyAdminRole;
@@ -23,10 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/training-sessions', [TrainingSessionController::class, 'index'])->name('training-sessions.index');
-    Route::get('/training-sessions/create', [TrainingSessionController::class, 'create'])->name('training-sessions.create');
-    Route::post('/training-sessions', [TrainingSessionController::class, 'store'])->name('training-sessions.store');
+    Route::resource('trainings', TrainingController::class);
 
     Route::middleware(VerifyAdminRole::class)->resource('users', UserController::class, ['except' => 'index']);
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

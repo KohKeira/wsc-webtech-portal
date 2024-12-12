@@ -3,7 +3,7 @@ export enum Mode {
     Physical = 'physical',
 }
 
-export interface TrainingSession {
+export interface Training {
     id: number;
     title: string;
     description: string;
@@ -12,5 +12,5 @@ export interface TrainingSession {
     date: Date;
     start_time: string;
     end_time: string;
-    duration: number;
+    user_id: number;
 }

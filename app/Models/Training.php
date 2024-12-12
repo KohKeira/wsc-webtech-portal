@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TrainingSession extends Model
+class Training extends Model
 {
     /** @use HasFactory<\Database\Factories\TrainingSessionFactory> */
     use HasFactory;
@@ -23,14 +23,14 @@ class TrainingSession extends Model
         'date',
         'start_time',
         'end_time',
-        'duration',
+        'user_id'
     ];
 
     /**
      * Get the user that owns the training session.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

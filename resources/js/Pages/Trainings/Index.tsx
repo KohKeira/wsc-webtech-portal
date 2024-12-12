@@ -10,7 +10,7 @@ const Index: React.FC<PageProps> = ({ flash }) => {
         <Authenticated
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Training
+                    Trainings
                 </h2>
             }
         >
@@ -21,7 +21,7 @@ const Index: React.FC<PageProps> = ({ flash }) => {
                         <SuccessAlert>{flash.message}</SuccessAlert>
                     )}
                     {
-                        <Link href={route('training-sessions.create')}>
+                        <Link href={route('trainings.create')}>
                             <PrimaryButton>Add Training</PrimaryButton>
                         </Link>
                     }
