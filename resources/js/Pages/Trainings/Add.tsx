@@ -6,17 +6,19 @@ import TextArea from '@/Components/TextArea';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Mode, Training } from '@/types/training.entity';
-import { Head, useForm } from '@inertiajs/react';
+import { Role } from '@/types/user.entity';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import React, { FormEventHandler, useState } from 'react';
 
 const Index: React.FC = () => {
+    const { auth } = usePage().props;
     const { data, setData, errors, processing, post } = useForm<
         Partial<Training>
     >({
         title: '',
         description: '',
-        mode: Mode.Virtual,
-        venue: 'MsTeams',
+        mode: Mode.Physical,
+        venue: '',
         date: undefined,
         start_time: '',
         end_time: '',
@@ -80,48 +82,54 @@ const Index: React.FC = () => {
                             className="mt-2"
                         />
                     </div>
-                    <div>
-                        <div className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Mode
-                        </div>
-                        <div
-                            className="grid grid-cols-2 gap-x-2"
-                            id="modeRadioButtonGroup"
-                        >
-                            <RadioButton
-                                id="virtualRadioButton"
-                                value="virtual"
-                                label="Virtual"
-                                name="mode"
-                                checked={data.mode === Mode.Virtual}
-                                onChange={(e) => {
-                                    setData('venue', 'MsTeams');
-                                    setData((prevData) => ({
-                                        ...prevData,
-                                        mode: e.target.value as Mode,
-                                        venue: 'MsTeams',
-                                    }));
-                                }}
-                                required
+                    {auth.user.role === Role.Lecturer && (
+                        <div>
+                            <div className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Mode
+                            </div>
+                            <div
+                                className="grid grid-cols-2 gap-x-2"
+                                id="modeRadioButtonGroup"
+                            >
+                                <RadioButton
+                                    id="virtualRadioButton"
+                                    value="virtual"
+                                    label="Virtual"
+                                    name="mode"
+                                    checked={data.mode === Mode.Virtual}
+                                    onChange={(e) => {
+                                        setData('venue', 'MsTeams');
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            mode: e.target.value as Mode,
+                                            venue: 'MsTeams',
+                                        }));
+                                    }}
+                                    required
+                                />
+                                <RadioButton
+                                    id="physicalRadioButton"
+                                    value="physical"
+                                    label="Physical"
+                                    name="mode"
+                                    checked={data.mode === Mode.Physical}
+                                    onChange={(e) => {
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            mode: e.target.value as Mode,
+                                            venue: physicalVenue,
+                                        }));
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <InputError
+                                message={errors.mode}
+                                className="mt-2"
                             />
-                            <RadioButton
-                                id="physicalRadioButton"
-                                value="physical"
-                                label="Physical"
-                                name="mode"
-                                checked={data.mode === Mode.Physical}
-                                onChange={(e) => {
-                                    setData((prevData) => ({
-                                        ...prevData,
-                                        mode: e.target.value as Mode,
-                                        venue: physicalVenue,
-                                    }));
-                                }}
-                                required
-                            />
                         </div>
-                        <InputError message={errors.mode} className="mt-2" />
-                    </div>
+                    )}
+
                     <div>
                         <InputLabel htmlFor="venue" value="Venue" />
                         <TextInput
