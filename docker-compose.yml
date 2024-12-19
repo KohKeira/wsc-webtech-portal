@@ -10,6 +10,10 @@ services:
             - mysql_data:/var/lib/mysql
         ports:
             - 3307:3306
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
 
     app:
         build: .
@@ -19,8 +23,10 @@ services:
         environment:
             DB_HOST: mysql
             DB_DATABASE: wsc-webtech
+        command: ["migrate"]
         depends_on:
-            - db
+            db:
+                condition: service_healthy
         ports:
             - 8000:80
         volumes:
