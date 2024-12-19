@@ -41,7 +41,7 @@ RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
 RUN npm install && npm run build
 
 # change permissions
-RUN chown -R www-data:www-data /var/www/html \
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
 && chmod -R 755 /var/www/html/storage \
 && chmod -R 755 /var/www/html/bootstrap/cache
 

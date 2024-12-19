@@ -8,5 +8,11 @@ php artisan view:clear
 # Ensure symbolic link to storage is created
 php artisan storage:link
 
+if [ "$1" == "migrate" ]; then
+    echo "Running migrations..."
+    php artisan migrate --seed --force
+    shift 
+fi
+
 # Now, start the Apache server
 apache2-foreground
