@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wsc-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wsc-docker-img
+  template:
+    metadata:
+      labels:
+        app: wsc-docker-img
+    spec:
+      initContainers:
+        - name: init-mysql
+          image: mysql:5.7
+          command: [ "sh", "-c"]
+          args:
+          - until mysql -h mysql -u root -p$MYSQL_ROOT_PASSWORD -e "USE $MYSQL_DATABASE"; do
+              echo "Waiting for $MYSQL_DATABASE to be ready...";
+              sleep 5;
+            done;
+          env:
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: MYSQL_DATABASE
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: MYSQL_ROOT_PASSWORD
+      containers:
+        - name: wsc-container
+          image: keira996/wsc-app:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/www/html/storage/app
+              name: app-storage
+          args: ['migrate']
+          envFrom:
+            - secretRef:
+                name: app-secret
+      securityContext:
+        fsGroup: 33
+      volumes:
+        - name: app-storage
+          persistentVolumeClaim:
+            claimName: app-storage-pvc
