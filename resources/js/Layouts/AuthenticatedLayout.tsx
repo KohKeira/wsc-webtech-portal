@@ -40,12 +40,10 @@ export default function Authenticated({
                                     Users
                                 </NavLink>
                                 <NavLink
-                                    href={route('training-sessions.index')}
-                                    active={route().current(
-                                        'training-sessions.index',
-                                    )}
+                                    href={route('trainings.index')}
+                                    active={route().current('trainings.index')}
                                 >
-                                    Training
+                                    Trainings
                                 </NavLink>
                             </div>
                         </div>
@@ -159,10 +157,10 @@ export default function Authenticated({
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
-                            href={route('training-sessions.index')}
-                            active={route().current('training-sessions.index')}
+                            href={route('trainings.index')}
+                            active={route().current('trainings.index')}
                         >
-                            Training
+                            Trainings
                         </ResponsiveNavLink>
                     </div>
 

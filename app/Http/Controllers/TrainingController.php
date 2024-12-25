@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TrainingSession;
+use App\Models\Training;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class TrainingSessionController extends Controller
+class TrainingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('TrainingSessions/Index');
+        return Inertia::render('Trainings/Index');
     }
 
     /**
@@ -21,7 +21,7 @@ class TrainingSessionController extends Controller
      */
     public function create()
     {
-        return Inertia::render('TrainingSessions/Add');
+        return Inertia::render('Trainings/Add');
     }
 
     /**
@@ -29,6 +29,7 @@ class TrainingSessionController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:2000',
@@ -37,12 +38,11 @@ class TrainingSessionController extends Controller
             'date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i|after_or_equal:09:00|before:end_time',
             'end_time' => 'required|date_format:H:i|after:start_time|before_or_equal:18:00',
-            'duration' => 'required|integer',
         ]);
 
-        TrainingSession::create($request->all());
+        auth()->user()->trainings()->create($request->all());
 
-        return redirect()->route('training-sessions.index')->with('message', 'Training session created successfully.');
+        return redirect()->route('trainings.index')->with('message', 'Training created successfully.');
     }
 
 }

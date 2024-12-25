@@ -56,9 +56,9 @@ class User extends Authenticatable
      */
 
     // @codeCoverageIgnoreStart
-    public function trainingSessions()
+    public function trainings()
     {
-        return $this->hasMany(TrainingSession::class);
+        return $this->hasMany(Training::class);
     }
     // @codeCoverageIgnoreEnd
 

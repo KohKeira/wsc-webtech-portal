@@ -1,0 +1,6 @@
+resources:
+  - storage-pvc.yml
+  - sql-deployment.yml
+  - sql-service.yml
+  - wsc-deployment.yml
+  - wsc-service.yml
