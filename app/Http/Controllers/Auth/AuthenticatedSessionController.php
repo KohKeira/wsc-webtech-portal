@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,17 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+
+        $user = $request->user();
+
+        // change password for newly created user
+        if (is_null($user->last_login)) {
+            Auth::guard('web')->logout();
+            return redirect(route('password.request'))->with('message','Newly created account requires user to change password.');
+        }
+
+        // Update last login timestamp
+        $user->update(['last_login' => Carbon::now()]);
 
         $request->session()->regenerate();
 
