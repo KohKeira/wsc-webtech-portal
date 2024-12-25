@@ -18,7 +18,8 @@ return new class extends Migration {
             $table->integer('phone_number');
             $table->string('avatar')->nullable();
             $table->enum('role', ['student', 'lecturer']);
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('last_login')->nullable();
+            $table->timestamp('email_verified_at')->nullable()->default(null);
             $table->string('password')->default(Hash::make('#WSCTech123'));
             $table->rememberToken();
             $table->timestamps();
