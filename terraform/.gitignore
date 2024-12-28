@@ -1,0 +1,29 @@
+# Local .terraform directory for provider plugins and module dependencies
+.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs from Terraform
+crash.log
+
+# Terraform plan output
+*.tfplan
+
+# .terraform.lock.hcl file (if using Terraform v0.14+)
+.terraform.lock.hcl
+
+# Ignore environment-specific files
+*.tfvars
+*.auto.tfvars
+
+# Ignore override files that may be created for local customization
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore any backup files
+*.bak
+*.backup
