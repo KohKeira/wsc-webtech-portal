@@ -2,6 +2,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import { Role } from '@/types/user.entity';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -25,7 +26,12 @@ export default function UpdateProfileInformation({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
+        if (data.email && !data.email.includes('@')) {
+            data.email +=
+                Role.Student === user.role
+                    ? '@student.tp.edu.sg'
+                    : '@tp.edu.sg';
+        }
         patch(route('profile.update'));
     };
 
@@ -63,14 +69,19 @@ export default function UpdateProfileInformation({
 
                     <TextInput
                         id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
+                        type="text"
+                        name="email"
+                        value={data.email?.split('@')[0]}
+                        className="block w-full"
+                        isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
+                        trailingHelperText={
+                            user.role === Role.Student
+                                ? '@student.tp.edu.sg'
+                                : '@tp.edu.sg'
+                        }
                         required
-                        autoComplete="username"
                     />
-
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
