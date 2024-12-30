@@ -5,7 +5,13 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function ForgotPassword({ status }: { status?: string }) {
+export default function ForgotPassword({
+    status,
+    message,
+}: {
+    status?: string;
+    message?: string;
+}) {
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
@@ -25,7 +31,11 @@ export default function ForgotPassword({ status }: { status?: string }) {
                 address and we will email you a password reset link that will
                 allow you to choose a new one.
             </div>
-
+            {message && (
+                <div className="mb-4 text-sm font-medium text-red-600 dark:text-red-400">
+                    {message}
+                </div>
+            )}
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
                     {status}
