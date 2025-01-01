@@ -2,10 +2,11 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import RadioButton from '@/Components/RadioButton';
+import SelectInput from '@/Components/SelectInput';
 import TextArea from '@/Components/TextArea';
 import TextInput from '@/Components/TextInput';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { Mode, Training } from '@/types/training.entity';
+import { Mode, Module, moduleOptions, Training } from '@/types/training.entity';
 import { Role } from '@/types/user.entity';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import React, { FormEventHandler, useState } from 'react';
@@ -18,6 +19,7 @@ const Index: React.FC = () => {
         title: '',
         description: '',
         mode: Mode.Physical,
+        module: Module.A,
         venue: '',
         date: undefined,
         start_time: '',
@@ -53,17 +55,42 @@ const Index: React.FC = () => {
             <Head title="Add Training" />
             <div className="mx-auto max-w-lg sm:p-6 lg:p-8">
                 <form onSubmit={submit} className="space-y-4">
-                    <div>
-                        <InputLabel htmlFor="title" value="Title" />
-                        <TextInput
-                            id="title"
-                            className="w-full"
-                            value={data.title}
-                            maxLength={255}
-                            onChange={(e) => setData('title', e.target.value)}
-                            required
-                        />
-                        <InputError message={errors.title} className="mt-2" />
+                    <div className="flex space-x-3">
+                        <div className="flex-1">
+                            <InputLabel htmlFor="title" value="Title" />
+                            <TextInput
+                                id="title"
+                                className="w-full"
+                                value={data.title}
+                                maxLength={255}
+                                onChange={(e) =>
+                                    setData('title', e.target.value)
+                                }
+                                required
+                            />
+                            <InputError
+                                message={errors.title}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div className="w-auto min-w-14">
+                            <InputLabel htmlFor="module" value="Module" />
+                            <SelectInput
+                                id="module"
+                                className="w-full"
+                                value={data.module}
+                                options={moduleOptions}
+                                onChange={(e) =>
+                                    setData('module', e.target.value as Module)
+                                }
+                                required
+                            />
+                            <InputError
+                                message={errors.module}
+                                className="mt-2"
+                            />
+                        </div>
                     </div>
                     <div>
                         <InputLabel htmlFor="description" value="Description" />
