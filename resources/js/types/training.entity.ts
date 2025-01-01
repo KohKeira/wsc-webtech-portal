@@ -1,3 +1,5 @@
+import { User } from './user.entity';
+
 export enum Mode {
     Virtual = 'virtual',
     Physical = 'physical',
@@ -24,5 +26,5 @@ export interface Training {
     date: Date;
     start_time: string;
     end_time: string;
-    user_id: number;
+    user: User;
 }

@@ -2,10 +2,17 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SuccessAlert from '@/Components/SuccessAlert';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { PageProps } from '@/types';
+import { Training } from '@/types/training.entity';
 import { Head, Link } from '@inertiajs/react';
 import React from 'react';
+import ComplusoryTrainingTable from './Partials/ComplusoryTrainingTable';
 
-const Index: React.FC<PageProps> = ({ flash }) => {
+const Index: React.FC<
+    PageProps & {
+        lecturerTrainings: Training[];
+        studentTrainings: Training[];
+    }
+> = ({ flash, lecturerTrainings }) => {
     return (
         <Authenticated
             header={
@@ -25,6 +32,8 @@ const Index: React.FC<PageProps> = ({ flash }) => {
                             <PrimaryButton>Add Training</PrimaryButton>
                         </Link>
                     }
+                    <h3 className="mt-6 text-2xl font-bold">Complusory</h3>
+                    <ComplusoryTrainingTable trainings={lecturerTrainings} />
                 </div>
             </div>
         </Authenticated>
