@@ -19,6 +19,7 @@ class Training extends Model
         'title',
         'description',
         'mode',
+        'module',
         'venue',
         'date',
         'start_time',
@@ -30,6 +31,7 @@ class Training extends Model
      * Get the user that owns the training session.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+
     public function user()
     {
         return $this->belongsTo(User::class);

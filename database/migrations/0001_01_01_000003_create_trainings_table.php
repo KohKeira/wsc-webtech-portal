@@ -15,11 +15,12 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->enum('mode',['physical','virtual']);
+            $table->enum('mode', ['physical', 'virtual']);
+            $table->enum('module', ['A', 'B', 'C', 'D', 'E', 'F']);
             $table->string('venue');
-            $table->string('date');
-            $table->string('start_time');
-            $table->string('end_time');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

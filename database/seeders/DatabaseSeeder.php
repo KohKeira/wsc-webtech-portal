@@ -22,7 +22,18 @@ class DatabaseSeeder extends Seeder
             'phone_number' => 91234567,
             'role' => 'student',
             'password' => 'test',
-        ]);
+        ])->trainings()
+            ->create([
+                'title' => "React",
+                'description' => "State Management and Hooks",
+                'mode' => 'physical',
+                'venue' => 'IRC',
+                'module' => 'D',
+                'date' => new Carbon('2025-01-20'),
+                'start_time' => new Carbon('09:00:00'),
+                'end_time' => new Carbon('13:00:00'),
+            ]);
+
         User::create([
             'name' => 'Ana Yap',
             'email' => 'ana_yap@tp.edu.sg',
@@ -31,7 +42,16 @@ class DatabaseSeeder extends Seeder
             'role' => 'lecturer',
             'password' => 'test',
             'last_login' => Carbon::now()
-
-        ]);
+        ])->trainings()
+            ->create([
+                'title' => "HTML",
+                'description' => "Basic Web Structure",
+                'mode' => 'virtual',
+                'venue' => 'MsTeams',
+                'module' => 'A',
+                'date' => new Carbon('2025-01-13'),
+                'start_time' => new Carbon('09:00:00'),
+                'end_time' => new Carbon('13:00:00'),
+            ]);
     }
 }
