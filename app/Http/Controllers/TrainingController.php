@@ -14,8 +14,8 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        $lecturerTrainings = Training::with('user')->whereRelation('user', 'role', '=', 'lecturer')->get();
-        $studentTrainings = Training::with('user')->whereRelation('user', 'role', '=', 'student')->get();
+        $lecturerTrainings = Training::with('user')->whereRelation('user', 'role', '=', 'lecturer')->whereDate('date', '>=', today())->get();
+        $studentTrainings = Training::with('user')->whereRelation('user', 'role', '=', 'student')->whereDate('date', '>=', today())->get();
         return Inertia::render('Trainings/Index', compact(['lecturerTrainings', 'studentTrainings']));
     }
 
