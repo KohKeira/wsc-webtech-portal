@@ -1,7 +1,8 @@
 import { Role, User } from '@/types/user.entity';
-import { useForm, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { FaCheck, FaRegCopy } from 'react-icons/fa';
+import SecondaryButton from './SecondaryButton';
 
 const UserCard: React.FC<{ user: User }> = ({ user }) => {
     const { auth } = usePage().props;
@@ -52,18 +53,17 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
                             {user.phone_number}
                         </span>
                         <div className="mt-4 flex">
-                            <a
-                                href={route('users.edit', { user: user.id })}
-                                className="inline-flex items-center rounded-lg bg-amber-400 px-4 py-2 text-center text-sm font-medium hover:bg-yellow-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                            >
-                                Edit
-                            </a>
-                            <button
+                            <Link href={route('users.edit', { user: user.id })}>
+                                <SecondaryButton className="mr-2 bg-amber-400 hover:bg-yellow-200">
+                                    Edit
+                                </SecondaryButton>
+                            </Link>
+                            <SecondaryButton
+                                className="mr-2 bg-red-400 hover:bg-red-200"
                                 onClick={() => deleteUser(user.id)}
-                                className="ms-2 rounded-lg border border-gray-200 bg-red-500 px-4 py-2 text-sm font-medium hover:bg-red-300 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
                             >
                                 Delete
-                            </button>
+                            </SecondaryButton>
                         </div>
                     </>
                 )}
