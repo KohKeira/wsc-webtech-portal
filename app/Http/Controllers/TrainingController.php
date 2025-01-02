@@ -80,6 +80,13 @@ class TrainingController extends Controller
 
         return redirect()->route('trainings.index')->with('message', 'Training updated successfully.');
     }
-
+    public function destroy(Training $training)
+    {
+        if (auth()->user()->id !== $training->id) {
+            return redirect()->route('trainings.index');
+        }
+        $training->delete();
+        return back()->with('message', 'Training deleted successfully.');
+    }
 
 }
