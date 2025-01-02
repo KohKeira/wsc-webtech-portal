@@ -50,5 +50,36 @@ class TrainingController extends Controller
 
         return redirect()->route('trainings.index')->with('message', 'Training created successfully.');
     }
+    public function edit(Training $training)
+    {
+        if (auth()->user()->id !== $training->id) {
+            return redirect()->route('trainings.index');
+        }
+        return Inertia::render('Trainings/Edit', compact('training'));
+    }
+    public function update(Request $request, Training $training)
+    {
+        if (auth()->user()->id !== $training->id) {
+            return redirect()->route('trainings.index');
+        }
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:2000',
+            'mode' => 'required|string|in:virtual,physical',
+            'module' => 'required|string|in:A,B,C,D,E,F',
+            'venue' => 'required|string',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required|date_format:H:i|after_or_equal:09:00|before:end_time',
+            'end_time' => 'required|date_format:H:i|after:start_time|before_or_equal:18:00',
+        ]);
+
+        $training->update([
+            ...$request->all(),
+            'date' => Carbon::createFromFormat('Y-m-d', explode('T', $request->date)[0])
+        ]);
+
+        return redirect()->route('trainings.index')->with('message', 'Training updated successfully.');
+    }
+
 
 }
