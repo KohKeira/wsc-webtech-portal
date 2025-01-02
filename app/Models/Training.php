@@ -9,6 +9,7 @@ class Training extends Model
 {
     /** @use HasFactory<\Database\Factories\TrainingSessionFactory> */
     use HasFactory;
+    protected $appends = ['attendance_exist'];
 
     /**
      * The attributes that are mass assignable.
@@ -35,5 +36,14 @@ class Training extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function getAttendanceExistAttribute()
+    {
+        return $this->attendances()->exists();
     }
 }

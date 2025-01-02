@@ -10,7 +10,7 @@ import StudentTrainingTable from './Partials/StudentTrainingTable';
 
 const Index: React.FC<
     PageProps & {
-        lecturerTrainings: Training[];
+        lecturerTrainings: (Training & { attendance_exist: boolean })[];
         studentTrainings: Training[];
     }
 > = ({ flash, lecturerTrainings, studentTrainings }) => {

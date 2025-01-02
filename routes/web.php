@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainingSessionController;
@@ -26,7 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('trainings', TrainingController::class);
 
-    Route::middleware(VerifyAdminRole::class)->resource('users', UserController::class, ['except' => 'index']);
+    Route::middleware(VerifyAdminRole::class)->group(function () {
+        Route::resource('users', UserController::class, ['except' => 'index']);
+        Route::resource('attendances', AttendanceController::class, ['except' => 'index']);
+    });
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
 

@@ -5,9 +5,9 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import TrainingModal from './TrainingModal';
 
-const ComplusoryTrainingTable: React.FC<{ trainings: Training[] }> = ({
-    trainings,
-}) => {
+const ComplusoryTrainingTable: React.FC<{
+    trainings: (Training & { attendance_exist: boolean })[];
+}> = ({ trainings }) => {
     const user = usePage().props.auth.user;
     const [selectedTraining, setSelectedTraining] = useState<Training | null>(
         null,
@@ -19,6 +19,7 @@ const ComplusoryTrainingTable: React.FC<{ trainings: Training[] }> = ({
             destroy(route('trainings.destroy', { training: id }));
         }
     };
+    console.log(trainings);
     return (
         <div className="relative my-4 overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-left text-gray-700 rtl:text-right dark:text-gray-400">
@@ -97,9 +98,24 @@ const ComplusoryTrainingTable: React.FC<{ trainings: Training[] }> = ({
                                 <>
                                     <td className="px-6 py-3">
                                         {user.id === t.user.id ? (
-                                            <SecondaryButton className="bg-sky-300 hover:bg-sky-100">
-                                                Add
-                                            </SecondaryButton>
+                                            t.attendance_exist ? (
+                                                <SecondaryButton className="bg-sky-300 hover:bg-sky-100">
+                                                    Edit
+                                                </SecondaryButton>
+                                            ) : (
+                                                <Link
+                                                    href={route(
+                                                        'attendances.create',
+                                                        {
+                                                            training: t.id,
+                                                        },
+                                                    )}
+                                                >
+                                                    <SecondaryButton className="bg-sky-300 hover:bg-sky-100">
+                                                        Add
+                                                    </SecondaryButton>
+                                                </Link>
+                                            )
                                         ) : (
                                             <p>-</p>
                                         )}
