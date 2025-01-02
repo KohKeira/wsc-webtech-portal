@@ -99,9 +99,19 @@ const ComplusoryTrainingTable: React.FC<{
                                     <td className="px-6 py-3">
                                         {user.id === t.user.id ? (
                                             t.attendance_exist ? (
-                                                <SecondaryButton className="bg-sky-300 hover:bg-sky-100">
-                                                    Edit
-                                                </SecondaryButton>
+                                                <Link
+                                                    href={route(
+                                                        'attendances.edit',
+                                                        {
+                                                            training: t.id,
+                                                        },
+                                                    )}
+                                                >
+                                                    {' '}
+                                                    <SecondaryButton className="bg-sky-300 hover:bg-sky-100">
+                                                        Edit
+                                                    </SecondaryButton>
+                                                </Link>
                                             ) : (
                                                 <Link
                                                     href={route(

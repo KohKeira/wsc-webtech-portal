@@ -29,7 +29,15 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(VerifyAdminRole::class)->group(function () {
         Route::resource('users', UserController::class, ['except' => 'index']);
-        Route::resource('attendances', AttendanceController::class, ['except' => 'index']);
+
+        Route::prefix('attendances')->group(function () {
+            Route::get('/edit/{training}', [AttendanceController::class, 'edit'])->name('attendances.edit');
+            Route::get('/create/{training}', [AttendanceController::class, 'create'])->name('attendances.create');
+            Route::post('/{training}', [AttendanceController::class, 'store'])->name('attendances.store');
+            Route::put('/{training}', [AttendanceController::class, 'update'])->name('attendances.update');
+
+        });
+
     });
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });

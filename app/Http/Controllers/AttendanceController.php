@@ -21,9 +21,8 @@ class AttendanceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Training $training)
     {
-        $training = Training::find(request('training'));
         if ($training->attendances()->exists()) {
             return redirect()->route('trainings.index');
         }
@@ -34,12 +33,12 @@ class AttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Training $training)
     {
         $attendanceList = $request->attendance;
         foreach ($attendanceList as $a) {
             // dd($a);
-            Attendance::create(['present' => $a['present'], 'training_id' => $request->training, 'user_id' => $a['user']['id']]);
+            Attendance::create(['present' => $a['present'], 'training_id' => $training->id, 'user_id' => $a['user']['id']]);
         }
         return redirect()->route('trainings.index')->with('message', 'Attendance created successfully.');
 
@@ -56,17 +55,26 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attendance $attendance)
+    public function edit(Training $training)
     {
-        //
+        if (!$training->attendances()->exists()) {
+            return redirect()->route('trainings.index');
+        }
+        $attendances = $training->attendances()->with('user')->get();
+        return Inertia::render('Attendance/Edit', compact(['attendances', 'training']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Attendance $attendance)
+    public function update(Request $request, Training $training)
     {
-        //
+        $attendanceList = $request->attendance;
+        foreach ($attendanceList as $a) {
+            Attendance::where('id', '=', $a['id'])->update(['present' => $a['present']]);
+        }
+        return redirect()->route('trainings.index')->with('message', 'Attendance updated successfully.');
+
     }
 
     /**
