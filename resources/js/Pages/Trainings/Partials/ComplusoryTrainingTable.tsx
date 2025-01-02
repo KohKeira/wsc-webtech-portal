@@ -1,7 +1,7 @@
 import SecondaryButton from '@/Components/SecondaryButton';
 import { Training } from '@/types/training.entity';
 import { Role } from '@/types/user.entity';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import TrainingModal from './TrainingModal';
 
@@ -13,6 +13,12 @@ const ComplusoryTrainingTable: React.FC<{ trainings: Training[] }> = ({
         null,
     );
 
+    const { delete: destroy } = useForm();
+    const deleteTraining = (id: number) => {
+        if (confirm('Do you want to delete this training?')) {
+            destroy(route('trainings.destroy', { training: id }));
+        }
+    };
     return (
         <div className="relative my-4 overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-left text-gray-700 rtl:text-right dark:text-gray-400">
@@ -111,7 +117,6 @@ const ComplusoryTrainingTable: React.FC<{ trainings: Training[] }> = ({
                                     <td className="px-6 py-3">
                                         {user.id === t.user.id ? (
                                             <>
-                                                {' '}
                                                 <Link
                                                     href={route(
                                                         'trainings.edit',
@@ -124,7 +129,12 @@ const ComplusoryTrainingTable: React.FC<{ trainings: Training[] }> = ({
                                                         Edit
                                                     </SecondaryButton>
                                                 </Link>
-                                                <SecondaryButton className="bg-red-400 hover:bg-red-200">
+                                                <SecondaryButton
+                                                    className="bg-red-400 hover:bg-red-200"
+                                                    onClick={() =>
+                                                        deleteTraining(t.id)
+                                                    }
+                                                >
                                                     Delete
                                                 </SecondaryButton>
                                             </>
