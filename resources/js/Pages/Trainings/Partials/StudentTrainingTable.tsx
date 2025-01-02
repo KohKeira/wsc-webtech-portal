@@ -29,7 +29,7 @@ const StudentTrainingTable: React.FC<{ trainings: Training[] }> = ({
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Student
-                        </th>{' '}
+                        </th>
                         <th scope="col" className="px-6 py-3">
                             Module
                         </th>
