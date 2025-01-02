@@ -11,19 +11,20 @@ import { Role } from '@/types/user.entity';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import React, { FormEventHandler, useState } from 'react';
 
-const Index: React.FC = () => {
+const Edit: React.FC<{ training: Training }> = ({ training }) => {
     const { auth } = usePage().props;
     const { data, setData, errors, processing, post } = useForm<
-        Partial<Training>
+        Partial<Training> & { _method: string }
     >({
-        title: '',
-        description: '',
-        mode: Mode.Physical,
-        module: Module.A,
-        venue: '',
-        date: undefined,
-        start_time: '',
-        end_time: '',
+        title: training.title,
+        description: training.description,
+        mode: training.mode,
+        module: training.module,
+        venue: training.venue,
+        date: new Date(training.date),
+        start_time: training.start_time.slice(0, 5),
+        end_time: training.end_time.slice(0, 5),
+        _method: 'put',
     });
     const [physicalVenue, setPhysicalVenue] = useState('');
 
@@ -41,18 +42,18 @@ const Index: React.FC = () => {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('trainings.store'));
+        post(route('trainings.update', { training: training.id }));
     };
 
     return (
         <Authenticated
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Add Training
+                    Edit Training
                 </h2>
             }
         >
-            <Head title="Add Training" />
+            <Head title="Edit Training" />
             <div className="mx-auto max-w-lg sm:p-6 lg:p-8">
                 <form onSubmit={submit} className="space-y-4">
                     <div className="flex space-x-3">
@@ -238,7 +239,7 @@ const Index: React.FC = () => {
 
                     <div className="flex justify-end">
                         <PrimaryButton className="" disabled={processing}>
-                            Add
+                            Edit
                         </PrimaryButton>
                     </div>
                 </form>
@@ -246,4 +247,4 @@ const Index: React.FC = () => {
         </Authenticated>
     );
 };
-export default Index;
+export default Edit;
