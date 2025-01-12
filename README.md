@@ -36,7 +36,8 @@ This project contains a WorldSkills Competition Web Tech Portal application.
    For example, to run the project in development mode:
 
     ```sh
-    composer run-script dev
+    npm start
+    ```
 
 
 ## Testing for Add User Functionality
