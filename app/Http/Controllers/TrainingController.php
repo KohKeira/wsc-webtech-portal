@@ -52,14 +52,14 @@ class TrainingController extends Controller
     }
     public function edit(Training $training)
     {
-        if (auth()->user()->id !== $training->id) {
+        if (auth()->user()->id !== $training->user_id) {
             return redirect()->route('trainings.index');
         }
         return Inertia::render('Trainings/Edit', compact('training'));
     }
     public function update(Request $request, Training $training)
     {
-        if (auth()->user()->id !== $training->id) {
+        if (auth()->user()->id !== $training->user_id) {
             return redirect()->route('trainings.index');
         }
         $request->validate([
@@ -82,7 +82,7 @@ class TrainingController extends Controller
     }
     public function destroy(Training $training)
     {
-        if (auth()->user()->id !== $training->id) {
+        if (auth()->user()->id !== $training->user_id) {
             return redirect()->route('trainings.index');
         }
         $training->delete();
