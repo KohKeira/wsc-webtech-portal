@@ -13,6 +13,17 @@ const ComplusoryTrainingTable: React.FC<{
         null,
     );
 
+    const isToday = (dateToCheck: Date) => {
+        // Get today's date
+        const today = new Date();
+
+        // Convert both dates to strings in the format "Day Mon DD YYYY"
+        const todayString = today.toDateString();
+        const dateString = dateToCheck.toDateString();
+
+        // Return true if the dateToCheck is today, otherwise return false
+        return todayString === dateString;
+    };
     const { delete: destroy } = useForm();
     const deleteTraining = (id: number) => {
         if (confirm('Do you want to delete this training?')) {
@@ -97,7 +108,8 @@ const ComplusoryTrainingTable: React.FC<{
                             ) : (
                                 <>
                                     <td className="px-6 py-3">
-                                        {user.id === t.user.id ? (
+                                        {user.id === t.user.id &&
+                                        isToday(new Date(t.date)) ? (
                                             t.attendance_exist ? (
                                                 <Link
                                                     href={route(
@@ -127,7 +139,7 @@ const ComplusoryTrainingTable: React.FC<{
                                                 </Link>
                                             )
                                         ) : (
-                                            <p>-</p>
+                                            <p>Unavailable</p>
                                         )}
                                     </td>
                                     <td className="px-6 py-3">

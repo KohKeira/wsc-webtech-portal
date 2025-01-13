@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Training;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -23,7 +24,7 @@ class AttendanceController extends Controller
      */
     public function create(Training $training)
     {
-        if ($training->attendances()->exists()) {
+        if ($training->attendances()->exists() || Carbon::parse($training->date) != today()) {
             return redirect()->route('trainings.index');
         }
         $students = User::where('role', '=', 'student')->get();
@@ -57,7 +58,7 @@ class AttendanceController extends Controller
      */
     public function edit(Training $training)
     {
-        if (!$training->attendances()->exists()) {
+        if (!$training->attendances()->exists() || Carbon::parse($training->date) != today()) {
             return redirect()->route('trainings.index');
         }
         $attendances = $training->attendances()->with('user')->get();
