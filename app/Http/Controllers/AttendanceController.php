@@ -18,8 +18,14 @@ class AttendanceController extends Controller
     {
         if (auth()->user()->role === 'student') {
             $attendances = auth()->user()->attendances()->with('training.user')->get();
+            return Inertia::render('Attendance/Index', compact('attendances'));
+
+        } else {
+            $attendances = Attendance::with(['training.user', 'user'])->get();
+            $students = User::where('role', '=', 'student')->get(['id', 'name']);
+            return Inertia::render('Attendance/Index', compact(['attendances', 'students']));
+
         }
-        return Inertia::render('Attendance/Index', compact('attendances'));
 
     }
 

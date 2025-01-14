@@ -20,11 +20,14 @@ const StudentAttendanceView: React.FC<{ attendances: Attendance[] }> = ({
         : 0;
 
     return (
-        <>
-            <div className="overflow-hidden rounded bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-2 sm:px-6 md:flex-row lg:px-8">
+            <div
+                className="overflow-hidden rounded bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                style={{ height: 'fit-content' }}
+            >
                 <div
                     className="p-6 text-gray-900 dark:text-gray-100"
-                    style={{ width: 180, height: 'fit-content' }}
+                    style={{ width: 180 }}
                 >
                     <h3 className="mb-5 text-center text-xl font-bold">
                         Summary
@@ -123,7 +126,7 @@ const StudentAttendanceView: React.FC<{ attendances: Attendance[] }> = ({
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 export default StudentAttendanceView;
