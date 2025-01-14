@@ -102,11 +102,11 @@ const LecturerAttendanceView: React.FC<{
             </ul>
             <div className="flex flex-col gap-6 md:flex-row">
                 <div
-                    className="overflow-hidden rounded bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
-                    style={{ height: 'fit-content' }}
+                    className="flex justify-center overflow-hidden rounded bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                    style={{ height: 'fit-content', minWidth: 180 }}
                 >
                     <div
-                        className="p-6 text-gray-900 dark:text-gray-100"
+                        className="shrink-0 p-6 text-gray-900 dark:text-gray-100"
                         style={{ width: 180 }}
                     >
                         <h3 className="mb-5 text-center text-xl font-bold">
