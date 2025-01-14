@@ -19,7 +19,7 @@ const Edit: React.FC<{ attendances: Attendance[]; training: Training }> = ({
     });
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('attendances.update', { training: training.id }));
+        post(route('trainings.attendances.update', { training: training.id }));
     };
 
     return (

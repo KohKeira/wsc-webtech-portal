@@ -16,7 +16,7 @@
         "cy:coverage": "nyc npm run cy:run",
         "test:unit": "jest",
         "test:unit-coverage": "jest --coverage",
-        "test:cy-coverage":"start-server-and-test serve http://localhost:8000 cy:coverage"
+        "test:cy-coverage": "start-server-and-test serve http://localhost:8000 cy:coverage"
     },
     "devDependencies": {
         "@cypress/code-coverage": "^3.13.7",
@@ -70,6 +70,7 @@
         "ziggy-js": "^2.4.1"
     },
     "dependencies": {
+        "react-circular-progressbar": "^2.1.0",
         "react-icons": "^5.4.0"
     }
 }

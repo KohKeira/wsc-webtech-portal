@@ -23,7 +23,7 @@ const Add: React.FC<{ students: User[]; training: Training }> = ({
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         console.log(data);
-        post(route('attendances.store', { training: training.id }));
+        post(route('trainings.attendances.store', { training: training.id }));
     };
 
     return (

@@ -113,7 +113,7 @@ const ComplusoryTrainingTable: React.FC<{
                                             t.attendance_exist ? (
                                                 <Link
                                                     href={route(
-                                                        'attendances.edit',
+                                                        'trainings.attendances.edit',
                                                         {
                                                             training: t.id,
                                                         },
@@ -127,7 +127,7 @@ const ComplusoryTrainingTable: React.FC<{
                                             ) : (
                                                 <Link
                                                     href={route(
-                                                        'attendances.create',
+                                                        'trainings.attendances.create',
                                                         {
                                                             training: t.id,
                                                         },

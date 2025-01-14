@@ -16,7 +16,11 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        if (auth()->user()->role === 'student') {
+            $attendances = auth()->user()->attendances()->with('training.user')->get();
+        }
+        return Inertia::render('Attendance/Index', compact('attendances'));
+
     }
 
     /**

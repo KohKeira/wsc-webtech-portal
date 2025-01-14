@@ -30,15 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware(VerifyAdminRole::class)->group(function () {
         Route::resource('users', UserController::class, ['except' => 'index']);
 
-        Route::prefix('attendances')->group(function () {
-            Route::get('/edit/{training}', [AttendanceController::class, 'edit'])->name('attendances.edit');
-            Route::get('/create/{training}', [AttendanceController::class, 'create'])->name('attendances.create');
-            Route::post('/{training}', [AttendanceController::class, 'store'])->name('attendances.store');
-            Route::put('/{training}', [AttendanceController::class, 'update'])->name('attendances.update');
-
-        });
-
+        Route::resource('trainings.attendances', AttendanceController::class)->shallow()->only(['create', 'store']);
+        Route::put('/trainings/{training}/attendances', [AttendanceController::class, 'update'])->name('trainings.attendances.update');
+        Route::get('/trainings/{training}/attendances/edit', [AttendanceController::class, 'edit'])->name('trainings.attendances.edit');
     });
+    Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
 
