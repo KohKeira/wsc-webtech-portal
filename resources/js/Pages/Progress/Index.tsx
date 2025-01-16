@@ -1,12 +1,12 @@
-import PrimaryButton from '@/Components/PrimaryButton';
-import SuccessAlert from '@/Components/SuccessAlert';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
+import { Progress } from '@/types/progress.entity';
 import { Role } from '@/types/user.entity';
-import { Head, Link } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import React from 'react';
+import StudentView from './Partials/StudentView';
 
-const Index: React.FC<PageProps> = ({ flash, auth }) => {
+const Index: React.FC<{ progress: Progress[] }> = ({ progress }) => {
+    const user = usePage().props.auth.user;
     return (
         <Authenticated
             header={
@@ -17,18 +17,9 @@ const Index: React.FC<PageProps> = ({ flash, auth }) => {
         >
             <Head title="Training" />
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {flash?.message && (
-                        <SuccessAlert>{flash.message}</SuccessAlert>
-                    )}
-                    {auth.user.role === Role.Student && (
-                        <Link
-                            href={route('users.progresses.create', [auth.user])}
-                        >
-                            <PrimaryButton>Add Progress</PrimaryButton>
-                        </Link>
-                    )}
-                </div>
+                {user.role === Role.Student && (
+                    <StudentView progress={progress} />
+                )}
             </div>
         </Authenticated>
     );
