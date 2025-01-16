@@ -8,6 +8,12 @@ for (let i = 0; i < 10; i++) {
     pastYears.push((currentYear - i).toString());
 }
 
+export interface ProgressFilters {
+    year: string;
+    module: string;
+    status: string;
+    review: string;
+}
 export enum Status {
     Completed = 'Completed',
     'In Progress' = 'In Progress',
