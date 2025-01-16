@@ -61,7 +61,12 @@ class User extends Authenticatable
         return $this->hasMany(Training::class);
     }
     // @codeCoverageIgnoreEnd
-    public function attendances(){
+    public function attendances()
+    {
         return $this->hasMany(Attendance::class);
+    }
+    public function progresses()
+    {
+        return $this->hasMany(Progress::class);
     }
 }

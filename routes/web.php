@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\TrainingController;
-use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\VerifyAdminRole;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -36,6 +35,10 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::resource('users.progresses', ProgressController::class)->shallow()->except('index');
+    Route::get('/progresses', [ProgressController::class, 'index'])->name('progresses.index');
+
+
 });
 
 
