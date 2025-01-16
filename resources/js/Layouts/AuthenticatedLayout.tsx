@@ -46,6 +46,12 @@ export default function Authenticated({
                                     Trainings
                                 </NavLink>
                                 <NavLink
+                                    href={route('progresses.index')}
+                                    active={route().current('progresses.index')}
+                                >
+                                    Progress
+                                </NavLink>
+                                <NavLink
                                     href={route('attendances.index')}
                                     active={route().current(
                                         'attendances.index',
@@ -168,6 +174,12 @@ export default function Authenticated({
                             active={route().current('trainings.index')}
                         >
                             Trainings
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('progresses.index')}
+                            active={route().current('progresses.index')}
+                        >
+                            Progress
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route('attendances.index')}
