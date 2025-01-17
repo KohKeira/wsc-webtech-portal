@@ -24,7 +24,7 @@ class ProgressController extends Controller
      */
     public function create(User $user)
     {
-        if (auth()->user()->id !== $user->id) {
+        if (auth()->user()->id !== $user->id || $user->role === 'lecturer') {
             return redirect()->route('progresses.index');
 
         }
@@ -64,7 +64,11 @@ class ProgressController extends Controller
      */
     public function edit(Progress $progress)
     {
-        //
+        if (auth()->user()->id !== $progress->user_id) {
+            return redirect()->route('progresses.index');
+
+        }
+        return Inertia::render('Progress/Edit',compact('progress'));
     }
 
     /**
@@ -72,7 +76,19 @@ class ProgressController extends Controller
      */
     public function update(Request $request, Progress $progress)
     {
-        //
+        $request->validate([
+            'country' => 'required|string',
+            'module' => 'required|string|in:A,B,C,D,E,F',
+            'year' => 'required|before_or_equal:' . Carbon::now()->year,
+            'status' => 'required|string|in:Completed,In Progress,Not Done',
+            'repository' => 'nullable|url',
+            'review' => 'required|boolean'
+        ]);
+        $progress->update([
+            ...$request->all()
+        ]);
+        return redirect()->route('progresses.index')->with('message', 'Progress updated successfully.');
+
     }
 
     /**
@@ -80,6 +96,10 @@ class ProgressController extends Controller
      */
     public function destroy(Progress $progress)
     {
-        //
+        if (auth()->user()->id !== $progress->user_id) {
+            return redirect()->route('progresses.index');
+        }
+        $progress->delete();
+        return back()->with('message', 'Progress deleted successfully.');
     }
 }
