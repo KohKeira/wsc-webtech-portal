@@ -2,8 +2,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import SuccessAlert from '@/Components/SuccessAlert';
 import { Progress, ProgressFilters } from '@/types/progress.entity';
-import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { Link, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import Filter from './Filter';
 
 const StudentView: React.FC<{ progress: Progress[] }> = ({ progress }) => {
@@ -23,7 +23,6 @@ const StudentView: React.FC<{ progress: Progress[] }> = ({ progress }) => {
         setFilters(updatedFilters);
         let filtered = progress;
         for (const [key, value] of Object.entries(updatedFilters)) {
-            console.log(value);
             if (value === '') continue;
             filtered = filtered.filter(
                 (item) => item[key as keyof Progress] == value,
@@ -39,6 +38,16 @@ const StudentView: React.FC<{ progress: Progress[] }> = ({ progress }) => {
             review: '',
         });
         setFilteredProgress(progress);
+    };
+    useEffect(() => {
+        setFilteredProgress(progress);
+    }, [progress]);
+
+    const { delete: destroy } = useForm();
+    const deleteProgress = (id: number) => {
+        if (confirm('Do you want to delete this?')) {
+            destroy(route('progresses.destroy', { progress: id }));
+        }
     };
     return (
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -151,7 +160,28 @@ const StudentView: React.FC<{ progress: Progress[] }> = ({ progress }) => {
                                                         '-'
                                                     )}
                                                 </td>
-                                                <td className="px-6 py-4"></td>
+                                                <td className="px-6 py-4">
+                                                    <Link
+                                                        href={route(
+                                                            'progresses.edit',
+                                                            {
+                                                                progress: p,
+                                                            },
+                                                        )}
+                                                    >
+                                                        <SecondaryButton className="mr-2 bg-amber-400 hover:bg-yellow-200 md:mb-1">
+                                                            Edit
+                                                        </SecondaryButton>
+                                                    </Link>
+                                                    <SecondaryButton
+                                                        className="bg-red-400 hover:bg-red-200"
+                                                        onClick={() =>
+                                                            deleteProgress(p.id)
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </SecondaryButton>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
