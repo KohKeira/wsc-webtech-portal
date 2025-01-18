@@ -15,8 +15,16 @@ class ProgressController extends Controller
      */
     public function index()
     {
-        $progress = auth()->user()->progresses;
-        return Inertia::render('Progress/Index', compact('progress'));
+        if (auth()->user()->role === 'lecturer') {
+            $progress = Progress::with('user')->get();
+            $students = User::where('role', '=', 'student')->get(['id', 'name']);
+            return Inertia::render('Progress/Index', compact(['progress', 'students']));
+
+        } else {
+            $progress = auth()->user()->progresses;
+            return Inertia::render('Progress/Index', compact('progress'));
+
+        }
     }
 
     /**
@@ -68,7 +76,7 @@ class ProgressController extends Controller
             return redirect()->route('progresses.index');
 
         }
-        return Inertia::render('Progress/Edit',compact('progress'));
+        return Inertia::render('Progress/Edit', compact('progress'));
     }
 
     /**
