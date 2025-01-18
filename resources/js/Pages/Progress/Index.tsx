@@ -1,11 +1,15 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Progress } from '@/types/progress.entity';
-import { Role } from '@/types/user.entity';
+import { Role, User } from '@/types/user.entity';
 import { Head, usePage } from '@inertiajs/react';
 import React from 'react';
+import LecturerView from './Partials/LecturerView';
 import StudentView from './Partials/StudentView';
 
-const Index: React.FC<{ progress: Progress[] }> = ({ progress }) => {
+const Index: React.FC<{ progress: Progress[]; students: User[] }> = ({
+    progress,
+    students,
+}) => {
     const user = usePage().props.auth.user;
     return (
         <Authenticated
@@ -17,8 +21,10 @@ const Index: React.FC<{ progress: Progress[] }> = ({ progress }) => {
         >
             <Head title="Training" />
             <div className="py-12">
-                {user.role === Role.Student && (
+                {user.role === Role.Student ? (
                     <StudentView progress={progress} />
+                ) : (
+                    <LecturerView progress={progress} students={students} />
                 )}
             </div>
         </Authenticated>
