@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -44,6 +45,8 @@ class AuthenticatedSessionController extends Controller
         $user->update(['last_login' => Carbon::now()]);
 
         $request->session()->regenerate();
+
+        Log::info("User: $user->name has logged in.");
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
