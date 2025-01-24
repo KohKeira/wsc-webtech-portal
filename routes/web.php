@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\VerifyAdminRole;
 use App\Models\Attendance;
 use App\Models\Progress;
+use App\Models\Training;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,16 +37,16 @@ Route::get('/dashboard', function () {
         $initiatedTraining = $user->trainings()->count();
 
         $data = ['progress' => $percentageProgress, 'attendance' => $percentageAttendance, 'initiatedTraining' => $initiatedTraining, 'trainingCompleted' => $completeAttendance];
-    }else{
+    } else {
         $progress = Progress::query();
         $totalProgress = $progress->count();
 
         $completeProgress = $progress->where('status', '=', 'Completed')->count();
         $percentageProgress = ($completeProgress / ($totalProgress === 0 ? 1 : $totalProgress)) * 100;
 
-        $students = User::where('role','=','student')->count();
+        $students = User::where('role', '=', 'student')->count();
 
-        $attendance =Attendance::query();
+        $attendance = Attendance::query();
         $totalAttendance = $attendance->count();
 
         $completeAttendance = $attendance->where('present', '=', 1)->count();
@@ -53,9 +54,10 @@ Route::get('/dashboard', function () {
 
         $initiatedTraining = $user->trainings()->whereDate('date', '<', today())->count();
 
-        $data = ['progress' => $percentageProgress, 'students' => $students, 'attendance' => $percentageAttendance, 'trainingCompleted' => $initiatedTraining];   
+        $data = ['progress' => $percentageProgress, 'students' => $students, 'attendance' => $percentageAttendance, 'trainingCompleted' => $initiatedTraining];
     }
-    return Inertia::render('Dashboard/Index', compact('data'));
+    $trainings = Training::with('user')->get();
+    return Inertia::render('Dashboard/Index', compact(['data', 'trainings']));
 
 })->middleware(['auth', 'verified'])->name('dashboard');
 

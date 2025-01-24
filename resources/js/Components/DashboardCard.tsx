@@ -10,7 +10,7 @@ const DashboardCard: React.FC<{
 }> = ({ icon, percentage, number, label, link }) => {
     return (
         <Link href={route(link)}>
-            <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+            <div className="h-full overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                 <div className="flex items-center gap-4 p-6 text-gray-900 dark:text-gray-100">
                     <div>{icon}</div>
                     <div className="grow">
