@@ -1,6 +1,7 @@
 import DashboardCard from '@/Components/DashboardCard';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { PageProps } from '@/types';
+import { Task } from '@/types/task.entity';
 import { Training } from '@/types/training.entity';
 import { Role } from '@/types/user.entity';
 import { Head } from '@inertiajs/react';
@@ -13,6 +14,7 @@ import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
 import { MdCalendarMonth } from 'react-icons/md';
 import { PiStudent } from 'react-icons/pi';
 import TrainingModal from '../Trainings/Partials/TrainingModal';
+import Index from './Tasks/Index';
 
 const localizer = momentLocalizer(moment);
 
@@ -20,7 +22,12 @@ export default function Dashboard({
     auth,
     trainings,
     data,
-}: PageProps & { data: Record<string, number>; trainings: Training[] }) {
+    tasks,
+}: PageProps & {
+    data: Record<string, number>;
+    trainings: Training[];
+    tasks: Task[];
+}) {
     const [selectedTraining, setSelectedTraining] = useState<Training | null>(
         null,
     );
@@ -113,34 +120,36 @@ export default function Dashboard({
                             </>
                         )}
                     </div>
-
-                    <div className="my-4 flex overflow-x-auto bg-white shadow-sm sm:rounded-lg md:justify-center dark:bg-gray-800">
-                        <div
-                            className="w-full max-w-3xl p-4 md:p-6"
-                            style={{
-                                minWidth: 500,
-                            }}
-                        >
-                            <Calendar
-                                localizer={localizer}
-                                events={trainingData}
-                                onSelectEvent={(event) => {
-                                    const training =
-                                        trainings.find(
-                                            (t) => t.id === event.id,
-                                        ) ?? null;
-                                    setSelectedTraining(training);
-                                }}
-                                startAccessor="start"
-                                endAccessor="end"
-                                min={startTime}
-                                max={endTime}
+                    <div className="my-4 flex w-full flex-col gap-4 md:flex-row">
+                        <div className="flex grow overflow-x-auto bg-white shadow-sm sm:rounded-lg md:justify-center dark:bg-gray-800">
+                            <div
+                                className="w-full max-w-3xl p-4 md:p-6"
                                 style={{
-                                    height: 500,
-                                    width: '100%', // Ensures the calendar respects its parent's width
+                                    minWidth: 500,
                                 }}
-                            />
+                            >
+                                <Calendar
+                                    localizer={localizer}
+                                    events={trainingData}
+                                    onSelectEvent={(event) => {
+                                        const training =
+                                            trainings.find(
+                                                (t) => t.id === event.id,
+                                            ) ?? null;
+                                        setSelectedTraining(training);
+                                    }}
+                                    startAccessor="start"
+                                    endAccessor="end"
+                                    min={startTime}
+                                    max={endTime}
+                                    style={{
+                                        height: 500,
+                                        width: '100%', // Ensures the calendar respects its parent's width
+                                    }}
+                                />
+                            </div>
                         </div>
+                        <Index tasks={tasks} />
                     </div>
                 </div>
                 {selectedTraining && (

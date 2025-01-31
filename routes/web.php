@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\VerifyAdminRole;
@@ -57,7 +58,8 @@ Route::get('/dashboard', function () {
         $data = ['progress' => $percentageProgress, 'students' => $students, 'attendance' => $percentageAttendance, 'trainingCompleted' => $initiatedTraining];
     }
     $trainings = Training::with('user')->get();
-    return Inertia::render('Dashboard/Index', compact(['data', 'trainings']));
+    $tasks = $user->tasks;
+    return Inertia::render('Dashboard/Index', compact(['data', 'trainings', 'tasks']));
 
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -79,6 +81,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::resource('users.progresses', ProgressController::class)->shallow()->except('index');
     Route::get('/progresses', [ProgressController::class, 'index'])->name('progresses.index');
+    Route::resource('tasks', TaskController::class)->only(['store', 'destroy']);
 
 
 });
