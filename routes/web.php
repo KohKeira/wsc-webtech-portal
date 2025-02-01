@@ -76,6 +76,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('trainings.attendances', AttendanceController::class)->shallow()->only(['create', 'store']);
         Route::put('/trainings/{training}/attendances', [AttendanceController::class, 'update'])->name('trainings.attendances.update');
         Route::get('/trainings/{training}/attendances/edit', [AttendanceController::class, 'edit'])->name('trainings.attendances.edit');
+        Route::get('/attendances/download', [AttendanceController::class, 'download'])->name('attendances.download');
+
     });
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

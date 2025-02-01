@@ -33,7 +33,6 @@ const LecturerAttendanceView: React.FC<{
         let filtered: Attendance[] = attendances;
         if (value !== '') {
             if (trainingMode) {
-                console.log(value);
                 filtered = filtered.filter((a) => {
                     return (
                         new Date(a.training.date).toDateString() ===
@@ -139,12 +138,20 @@ const LecturerAttendanceView: React.FC<{
                                 <TextInput
                                     id="training"
                                     type="date"
-                                    className="mt-2 w-full"
+                                    className="mt-2"
                                     value={selectedValue}
                                     maxLength={255}
                                     onChange={handleChange}
                                     required
-                                />{' '}
+                                />
+                                <SecondaryButton
+                                    className="mt-4 bg-amber-400 hover:bg-yellow-200"
+                                    onClick={() =>
+                                        (window.location.href = `/attendances/download?training_date=${selectedValue}`)
+                                    }
+                                >
+                                    Download
+                                </SecondaryButton>
                             </>
                         ) : (
                             <>
