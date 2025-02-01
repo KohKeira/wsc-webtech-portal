@@ -7,6 +7,7 @@ use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
 class AttendanceController extends Controller
@@ -55,13 +56,6 @@ class AttendanceController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attendance $attendance)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -87,12 +81,34 @@ class AttendanceController extends Controller
         return redirect()->route('trainings.index')->with('message', 'Attendance updated successfully.');
 
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Attendance $attendance)
+    public function download()
     {
-        //
+        $training = request('training_date');
+        $attendances = Attendance::with('user');
+        if ($training) {
+            $attendances->whereRelation('training', 'date', '=', $training);
+        }
+        $attendances = $attendances->get(['user_id', 'training_id', 'present']);
+
+        // Write data to CSV
+        $csvFileName = 'attendance.csv';
+        $csvFile = fopen($csvFileName, 'w');
+        $headers = ['student', 'training_id', 'present'];
+
+        fputcsv($csvFile, $headers);
+
+        foreach ($attendances as $row) {
+            $data['student'] = $row->user->name;
+            $data['training_id'] = $row->training_id;
+            $data['present'] = $row->present;
+
+            fputcsv($csvFile, $data);
+        }
+
+        fclose($csvFile);
+
+        // Download the CSV file
+        return response()->download($csvFileName)->deleteFileAfterSend(true);
     }
+
 }
