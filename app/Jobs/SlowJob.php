@@ -22,10 +22,16 @@ class SlowJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle()
     {
-        Log::info("Processing {$this->task}...");
-        sleep(5); // Simulate slow job processing
+        Log::info("Processing {$this->task}. Please wait for 2 seconds.");
+        sleep(2);
+
+        if (random_int(1, 2) === 1) {
+            throw new \Exception("Error for {$this->task}.");
+        }
         Log::info("Completed {$this->task}.");
+
     }
+
 }

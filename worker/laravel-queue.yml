@@ -4,8 +4,6 @@ apps:
     exec_mode: fork
     interpreter: php
     instances: 1
-    args:
-      - queue:work
-      - --tries=3
-      - --sleep=1
+    args: "queue:work --tries=3 --sleep=2"
     max_restarts: 3
+    restart_delay: 3000

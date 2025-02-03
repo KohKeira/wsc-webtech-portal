@@ -17,11 +17,11 @@ class SimulateSlowSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->simulateSlowHttpRequest();
-        $this->simulateSlowQuery();
+        // $this->simulateSlowHttpRequest();
+        // $this->simulateSlowQuery();
         $this->dispatchSlowJobs();
-        $this->simulateException();
-        $this->simulateCache();
+        // $this->simulateException();
+        // $this->simulateCache();
     }
     private function simulateSlowHttpRequest()
     {
@@ -44,7 +44,7 @@ class SimulateSlowSeeder extends Seeder
     private function dispatchSlowJobs()
     {
         Log::info('Dispatching slow jobs...');
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 3; $i++) {
             SlowJob::dispatch("Task {$i}")->delay(now()->addSeconds($i));
             Log::info("Dispatched SlowJob {$i}.");
         }
