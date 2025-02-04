@@ -90,6 +90,9 @@ return [
             'driver' => 'octane',
         ],
 
+        'apc'=>[
+            'driver' => 'apc',
+        ]
     ],
 
     /*

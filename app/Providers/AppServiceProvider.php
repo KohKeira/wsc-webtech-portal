@@ -3,9 +3,12 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Services\PrometheusService;
 use Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Prometheus\CollectorRegistry;
+use Prometheus\Storage\APCng;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +17,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(CollectorRegistry::class, function () {
+
+            return new CollectorRegistry(new APCng());
+
+        });
     }
 
     /**
@@ -26,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPulse', function (User $user) {
             return $user->role === 'lecturer';
         });
+        $this->app->singleton( PrometheusService::class, PrometheusService::class );
+
     }
 }

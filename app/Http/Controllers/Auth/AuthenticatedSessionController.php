@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\PrometheusService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, PrometheusService $prometheusService): RedirectResponse
     {
         $request->authenticate();
 
@@ -38,14 +39,13 @@ class AuthenticatedSessionController extends Controller
         // change password for newly created user
         if (is_null($user->last_login)) {
             Auth::guard('web')->logout();
-            return redirect(route('password.request'))->with('message','Newly created account requires user to change password.');
+            return redirect(route('password.request'))->with('message', 'Newly created account requires user to change password.');
         }
 
         // Update last login timestamp
         $user->update(['last_login' => Carbon::now()]);
-
         $request->session()->regenerate();
-
+        $prometheusService->incrementLogin(auth()->user()->role);
         Log::info("User: $user->name has logged in.");
 
         return redirect()->intended(route('dashboard', absolute: false));

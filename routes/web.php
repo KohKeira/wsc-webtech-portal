@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\PrometheusController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
@@ -77,6 +78,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/trainings/{training}/attendances', [AttendanceController::class, 'update'])->name('trainings.attendances.update');
         Route::get('/trainings/{training}/attendances/edit', [AttendanceController::class, 'edit'])->name('trainings.attendances.edit');
         Route::get('/attendances/download', [AttendanceController::class, 'download'])->name('attendances.download');
+
+        Route::get('/metrics', [PrometheusController::class, 'metrics']);
 
     });
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
