@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request, PrometheusService $prometheusService): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate($prometheusService);
 
         $user = $request->user();
 
@@ -46,6 +46,7 @@ class AuthenticatedSessionController extends Controller
         $user->update(['last_login' => Carbon::now()]);
         $request->session()->regenerate();
         $prometheusService->incrementLogin(auth()->user()->role);
+        $prometheusService->setActiveUserCount(auth()->user()->role);
         Log::info("User: $user->name has logged in.");
 
         return redirect()->intended(route('dashboard', absolute: false));
@@ -54,8 +55,10 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request, PrometheusService $prometheusService): RedirectResponse
     {
+        $prometheusService->setActiveUserCount(auth()->user()->role,1, 'dec');
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\PrometheusService;
 use Closure;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,12 +16,21 @@ class VerifyAdminRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {   
+    protected PrometheusService $prometheusService;
+
+    // Constructor Injection
+    public function __construct(PrometheusService $prometheusService)
+    {
+        $this->prometheusService = $prometheusService;
+    }
+
+     public function handle(Request $request, Closure $next): Response
+    {
         $user = auth()->user();
         if ($user->role !== 'lecturer') {
             $url = $request->url();
             Log::warning("Unauthorised access to $url by User: $user->name");
+            $this->prometheusService->incrementUnauthorisedAttempts();
             return redirect()->route('dashboard');
         }
 
