@@ -35,7 +35,7 @@ services:
     volumes:
       - ./alertmanager:/etc/alertmanager
     command:
-      - '--config.file=/etc/alertmanager/config.yml'
+      - '--config.file=/etc/alertmanager/configuration.yml'
       - '--storage.path=/alertmanager'
     restart: unless-stopped
     expose:
