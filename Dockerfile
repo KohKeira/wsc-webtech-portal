@@ -25,6 +25,8 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install gd pdo_mysql mbstring zip exif pcntl
 
+RUN pecl install apcu && docker-php-ext-enable apcu
+
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
 # copy laravel project
