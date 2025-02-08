@@ -26,7 +26,7 @@ export default function Authenticated({
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden md:ms-10 md:flex md:space-x-8">
                                 <NavLink
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
@@ -62,14 +62,14 @@ export default function Authenticated({
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div className="hidden md:ms-6 md:flex md:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white py-2 ps-3 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
                                                 {user.name}
 
@@ -107,7 +107,7 @@ export default function Authenticated({
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-me-2 flex items-center md:hidden">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
@@ -153,7 +153,7 @@ export default function Authenticated({
                 <div
                     className={
                         (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
+                        ' md:hidden'
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">

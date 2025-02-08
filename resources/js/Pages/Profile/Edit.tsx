@@ -22,7 +22,7 @@ export default function Edit({
             <Head title="Profile" />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl space-y-6 px-2 sm:px-6 lg:px-8">
                     {auth.user.role === Role.Lecturer && (
                         <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                             <UpdateProfileInformationForm
