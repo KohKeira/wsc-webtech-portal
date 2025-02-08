@@ -4,6 +4,7 @@ import SuccessAlert from '@/Components/SuccessAlert';
 import { Progress, ProgressFilters } from '@/types/progress.entity';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import Filter from './Filter';
 
 const StudentView: React.FC<{ progress: Progress[] }> = ({ progress }) => {
@@ -11,6 +12,9 @@ const StudentView: React.FC<{ progress: Progress[] }> = ({ progress }) => {
     const [filteredProgress, setFilteredProgress] =
         useState<Progress[]>(progress);
 
+    const [toggleFilter, setToggleFilter] = useState<boolean>(
+        window.innerWidth >= 768,
+    );
     const [filters, setFilters] = useState<ProgressFilters>({
         year: '',
         module: '',
@@ -61,11 +65,31 @@ const StudentView: React.FC<{ progress: Progress[] }> = ({ progress }) => {
                     style={{ height: 'fit-content', minWidth: 180 }}
                 >
                     <div className="w-full shrink-0 p-6 text-gray-900 dark:text-gray-100">
-                        <Filter
-                            filters={filters}
-                            handleChange={handleFilterChange}
-                            resetFilters={resetFilters}
-                        />
+                        <div className="flex items-center justify-between">
+                            <h1 className="mb-2 text-xl font-bold">Filters</h1>
+                            {toggleFilter ? (
+                                <IoIosArrowUp
+                                    size={20}
+                                    onClick={() =>
+                                        setToggleFilter((prev) => !prev)
+                                    }
+                                />
+                            ) : (
+                                <IoIosArrowDown
+                                    size={20}
+                                    onClick={() =>
+                                        setToggleFilter((prev) => !prev)
+                                    }
+                                />
+                            )}
+                        </div>
+                        {toggleFilter && (
+                            <Filter
+                                filters={filters}
+                                handleChange={handleFilterChange}
+                                resetFilters={resetFilters}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="grow overflow-hidden rounded bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
